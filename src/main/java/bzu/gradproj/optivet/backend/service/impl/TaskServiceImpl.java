@@ -4,11 +4,9 @@ import bzu.gradproj.optivet.backend.dto.TaskDTO;
 import bzu.gradproj.optivet.backend.exception.ResourceNotFoundException;
 import bzu.gradproj.optivet.backend.mapper.TaskMapper;
 import bzu.gradproj.optivet.backend.model.entity.Board;
-import bzu.gradproj.optivet.backend.model.entity.Project;
 import bzu.gradproj.optivet.backend.model.entity.Task;
 import bzu.gradproj.optivet.backend.model.entity.User;
 import bzu.gradproj.optivet.backend.repository.BoardRepo;
-import bzu.gradproj.optivet.backend.repository.ProjectRepo;
 import bzu.gradproj.optivet.backend.repository.TaskRepo;
 import bzu.gradproj.optivet.backend.repository.UserRepo;
 import bzu.gradproj.optivet.backend.service.TaskService;
@@ -29,8 +27,6 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private final TaskRepo taskRepo;
 
-    @Autowired
-    private final ProjectRepo projectRepo;
 
     @Autowired
     private final UserRepo userRepo;
@@ -43,8 +39,6 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskDTO createTask(TaskDTO taskDTO) {
-        Project project = projectRepo.findById(taskDTO.getProjectId())
-                .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + taskDTO.getProjectId()));
 
         Board board = boardRepo.findById(taskDTO.getBoardId())
                 .orElseThrow(() -> new ResourceNotFoundException("Board not found with id: " + taskDTO.getBoardId()));
@@ -62,7 +56,6 @@ public class TaskServiceImpl implements TaskService {
         Task task = TaskMapper.INSTANCE.toTaskEntity(taskDTO);
         task.setAssignedTo(assignedTo);
         task.setBoard(board);
-        task.setProject(project);
 
         // Save the task with the due date
         Task savedTask = taskRepo.save(task);
@@ -90,9 +83,7 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepo.findById(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + taskId));
 
-        if (!task.getProject().getProjectId().equals(updatedTaskDTO.getProjectId())) {
-            throw new IllegalArgumentException("Changing the projectId is not allowed.");
-        }
+
 
         Board board = boardRepo.findById(updatedTaskDTO.getBoardId())
                 .orElseThrow(() -> new ResourceNotFoundException("Board not found with id: " + updatedTaskDTO.getBoardId()));
@@ -137,13 +128,6 @@ public class TaskServiceImpl implements TaskService {
         taskRepo.delete(task);
     }
 
-    @Override
-    public List<TaskDTO> getTasksByProjectId(long projectId) {
-        List<Task> tasks = taskRepo.findByProjectProjectId(projectId);
-        return tasks.stream()
-                .map(TaskMapper.INSTANCE::toTaskDTO)
-                .collect(Collectors.toList());
-    }
 
     @Override
     public List<TaskDTO> getTasksByUserId(long userId) {

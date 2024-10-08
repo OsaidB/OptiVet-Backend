@@ -16,9 +16,6 @@ import java.time.LocalDateTime;
 public class TaskDTO {
     private Long taskId;
 
-    @NotNull(message = "Project ID cannot be null")
-    private Long projectId;
-
     //    @NotNull(message = "User ID cannot be null")
     private Long assignedToUserId;
 

@@ -4,17 +4,16 @@ import bzu.gradproj.optivet.backend.dto.ActivityDTO;
 import bzu.gradproj.optivet.backend.exception.ResourceNotFoundException;
 import bzu.gradproj.optivet.backend.mapper.ActivityMapper;
 import bzu.gradproj.optivet.backend.model.entity.Activity;
-import bzu.gradproj.optivet.backend.model.entity.Project;
 import bzu.gradproj.optivet.backend.model.entity.Task;
 import bzu.gradproj.optivet.backend.model.entity.User;
 import bzu.gradproj.optivet.backend.repository.ActivityRepo;
-import bzu.gradproj.optivet.backend.repository.ProjectRepo;
 import bzu.gradproj.optivet.backend.repository.TaskRepo;
 import bzu.gradproj.optivet.backend.repository.UserRepo;
 import bzu.gradproj.optivet.backend.service.ActivityService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,8 +30,6 @@ public class ActivityServiceImpl implements ActivityService {
     @Autowired
     private TaskRepo taskRepo;
 
-    @Autowired
-    private ProjectRepo projectRepo;
 
     @Override
     public ActivityDTO createActivity(ActivityDTO activityDTO) {
@@ -40,23 +37,22 @@ public class ActivityServiceImpl implements ActivityService {
                 .orElseThrow(() -> new ResourceNotFoundException("User Not Found" + activityDTO.getUserId()));
         Task task = taskRepo.findById(activityDTO.getTaskId())
                 .orElseThrow(() -> new ResourceNotFoundException("Task Not Found" + activityDTO.getTaskId()));
-        Project project = projectRepo.findById(activityDTO.getProjectId())
-                .orElseThrow(() -> new ResourceNotFoundException("Project Not Found" + activityDTO.getProjectId()));
 
-        Activity activity = ActivityMapper.mapToActivityEntity(activityDTO, user, project, task);
+
+        Activity activity = ActivityMapper.mapToActivityEntity(activityDTO, user, task);
         Activity savedActivity = activityRepo.save(activity);
         return ActivityMapper.mapToActivityDTO(savedActivity);
     }
 
     @Override
-    public ActivityDTO getActivityById(Long activityId){
+    public ActivityDTO getActivityById(Long activityId) {
         Activity activity = activityRepo.findById(activityId)
                 .orElseThrow(() -> new ResourceNotFoundException("Activity Not Found" + activityId));
         return ActivityMapper.mapToActivityDTO(activity);
     }
 
     @Override
-    public List<ActivityDTO> getActivitiesByTaskId(Long taskId){
+    public List<ActivityDTO> getActivitiesByTaskId(Long taskId) {
         taskRepo.findById(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task Not Found" + taskId));
         List<Activity> activities = activityRepo.getActivitiesByTaskTaskId(taskId);
@@ -64,7 +60,7 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public List<ActivityDTO> getAllActivities(){
+    public List<ActivityDTO> getAllActivities() {
         List<Activity> activities = activityRepo.findAll();
         return activities.stream().map(ActivityMapper::mapToActivityDTO).collect(Collectors.toList());
     }
@@ -75,15 +71,12 @@ public class ActivityServiceImpl implements ActivityService {
                 .orElseThrow(() -> new ResourceNotFoundException("User Not Found" + updateActivityDTO.getUserId()));
         Task task = taskRepo.findById(updateActivityDTO.getTaskId())
                 .orElseThrow(() -> new ResourceNotFoundException("Task Not Found" + updateActivityDTO.getTaskId()));
-        Project project = projectRepo.findById(updateActivityDTO.getProjectId())
-                .orElseThrow(() -> new ResourceNotFoundException("Project Not Found" + updateActivityDTO.getProjectId()));
         Activity activity = activityRepo.findById(activityId)
                 .orElseThrow(() -> new ResourceNotFoundException("Activity Not Found" + activityId));
 
         activity.setAction(updateActivityDTO.getAction());
         activity.setUser(user);
         activity.setTask(task);
-        activity.setProject(project);
 //        activity.setCreatedAt(updateActivityDTO.getCreatedAt());
 
         Activity savedActivity = activityRepo.save(activity);
@@ -91,7 +84,7 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public void deleteActivity(Long activityId){
+    public void deleteActivity(Long activityId) {
         Activity activity = activityRepo.findById(activityId)
                 .orElseThrow(() -> new ResourceNotFoundException("Activity Not Found" + activityId));
         activityRepo.delete(activity);

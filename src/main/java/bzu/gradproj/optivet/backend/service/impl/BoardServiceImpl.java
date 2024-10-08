@@ -4,10 +4,8 @@ import bzu.gradproj.optivet.backend.dto.BoardDTO;
 import bzu.gradproj.optivet.backend.exception.ResourceNotFoundException;
 import bzu.gradproj.optivet.backend.mapper.BoardMapper;
 import bzu.gradproj.optivet.backend.model.entity.Board;
-import bzu.gradproj.optivet.backend.model.entity.Project;
 //import bzu.gradproj.optivet.backend.model.entity.FunctionalRole;
 import bzu.gradproj.optivet.backend.repository.BoardRepo;
-import bzu.gradproj.optivet.backend.repository.ProjectRepo;
 //import bzu.gradproj.optivet.backend.repository.FuncRoleRepo;
 import bzu.gradproj.optivet.backend.service.BoardService;
 import jakarta.transaction.Transactional;
@@ -26,9 +24,6 @@ public class BoardServiceImpl implements BoardService {
 
     @Autowired
     private BoardRepo boardRepo;
-
-    @Autowired
-    private ProjectRepo projectRepo;
 
 
 
@@ -71,23 +66,12 @@ public class BoardServiceImpl implements BoardService {
         return boards.stream().map(BoardMapper.INSTANCE::toBoardDTO).collect(Collectors.toList());
     }
 
-    @Override
-    public List<BoardDTO> getBoardsByProjectId(Long projectId) {
-        projectRepo.findById(projectId)
-                .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + projectId));
-
-        List<Board> boards = boardRepo.findByProjectProjectId(projectId);
-        return boards.stream().map(BoardMapper.INSTANCE::toBoardDTO).collect(Collectors.toList());
-    }
 
     @Override
     public BoardDTO updateBoard(Long boardId, BoardDTO updatedBoard) {
         Board board = boardRepo.findById(boardId)
                 .orElseThrow(() -> new ResourceNotFoundException("Board not found with id: " + boardId));
-        Project project = projectRepo.findById(updatedBoard.getProjectId())
-                .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + updatedBoard.getProjectId()));
 
-        board.setProject(project);
         board.setName(updatedBoard.getName());
 //        board.setCreatedAt(updatedBoard.getCreatedAt());
         board.setUpdatedAt(updatedBoard.getUpdatedAt());

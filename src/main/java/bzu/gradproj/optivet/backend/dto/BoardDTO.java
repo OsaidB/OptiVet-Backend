@@ -21,8 +21,6 @@ public class BoardDTO {
     @Size(max = 100, message = "Board name must be less than 100 characters")
     private String name;
 
-    @NotNull(message = "Project ID cannot be null")
-    private Long projectId;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

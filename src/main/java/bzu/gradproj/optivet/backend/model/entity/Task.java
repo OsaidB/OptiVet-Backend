@@ -20,9 +20,6 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long taskId;
 
-    @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
-    private Project project;
 
     @ManyToOne
     @JoinColumn(name = "assigned_to_user_id", nullable = true)

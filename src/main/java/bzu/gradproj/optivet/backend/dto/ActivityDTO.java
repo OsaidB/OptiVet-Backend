@@ -17,8 +17,6 @@ public class ActivityDTO {
     @NotNull(message = "User ID cannot be null")
     private Long userId;
 
-    @NotNull(message = "Project ID cannot be null")
-    private Long projectId;
 
     @NotNull(message = "Task ID cannot be null")
     private Long taskId;

@@ -12,7 +12,6 @@ public interface TaskService {
     TaskDTO updateTask(Long taskId, TaskDTO updatedTask);
     void deleteTask(Long taskId);
 
-    List<TaskDTO> getTasksByProjectId(long projectId);
 
     List<TaskDTO> getTasksByUserId(long userId);
 

@@ -2,7 +2,6 @@ package bzu.gradproj.optivet.backend.mapper;
 
 import bzu.gradproj.optivet.backend.dto.ActivityDTO;
 import bzu.gradproj.optivet.backend.model.entity.Activity;
-import bzu.gradproj.optivet.backend.model.entity.Project;
 import bzu.gradproj.optivet.backend.model.entity.Task;
 import bzu.gradproj.optivet.backend.model.entity.User;
 
@@ -11,17 +10,17 @@ public class ActivityMapper {
         return new ActivityDTO(
                 activity.getActivityId(),
                 activity.getUser().getId(),
-                activity.getProject().getProjectId(),
+//                activity.getProject().getProjectId(),
                 activity.getTask().getTaskId(),
                 activity.getAction(),
                 activity.getCreatedAt()
         );
     }
-    public static Activity mapToActivityEntity(ActivityDTO activityDTO, User user, Project project,Task task) {
+    public static Activity mapToActivityEntity(ActivityDTO activityDTO, User user,Task task) {
         return new Activity(
                 activityDTO.getActivityId(),
                 user,
-                project,
+//                project,
                 task,
                 activityDTO.getAction(),
                 activityDTO.getCreatedAt()

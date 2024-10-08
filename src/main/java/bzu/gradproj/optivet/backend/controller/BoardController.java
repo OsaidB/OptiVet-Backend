@@ -43,11 +43,6 @@ public class BoardController {
         return ResponseEntity.ok(boardDTO);
     }
 
-    @GetMapping("projects/{projectId}")
-    public ResponseEntity<List<BoardDTO>> getBoardsByProject(@PathVariable("projectId") long projectId) {
-        List<BoardDTO> boardDTO = boardService.getBoardsByProjectId(projectId);
-        return ResponseEntity.ok(boardDTO);
-    }
 
     @PutMapping("{boardId}")
     public ResponseEntity<BoardDTO> updateBoard(@PathVariable("boardId") long boardId,

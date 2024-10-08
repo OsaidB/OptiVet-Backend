@@ -22,9 +22,6 @@ public class Activity {
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
-    private Project project;
 
     @ManyToOne
     @JoinColumn(name = "task_id", nullable = false)
