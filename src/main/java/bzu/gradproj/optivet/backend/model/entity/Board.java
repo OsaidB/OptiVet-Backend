@@ -20,9 +20,9 @@ public class Board {
 
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
-    private FunctionalRole role;
+//    @ManyToOne
+//    @JoinColumn(name = "role_id", nullable = false)
+//    private FunctionalRole role;
 
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)

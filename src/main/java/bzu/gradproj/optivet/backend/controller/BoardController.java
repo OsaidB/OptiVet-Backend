@@ -21,15 +21,15 @@ public class BoardController {
     @Autowired
     private final BoardService boardService;
 
-    @PostMapping("{roleId}")
-    public ResponseEntity<BoardDTO> createBoard(@Valid @RequestBody BoardDTO boardDTO
-                                                ,@PathVariable("roleId") long roleId) {
-//        long projectId = boardDTO.getProjectId();
-//        Long roleId = boardDTO.getRoleId();
-
-        BoardDTO createdBoard = boardService.createBoard(boardDTO.getProjectId(),roleId);
-        return new ResponseEntity<>(createdBoard, HttpStatus.CREATED);
-    }
+//    @PostMapping("{roleId}")
+//    public ResponseEntity<BoardDTO> createBoard(@Valid @RequestBody BoardDTO boardDTO
+//                                                ,@PathVariable("roleId") long roleId) {
+////        long projectId = boardDTO.getProjectId();
+////        Long roleId = boardDTO.getRoleId();
+//
+//        BoardDTO createdBoard = boardService.createBoard(boardDTO.getProjectId(),roleId);
+//        return new ResponseEntity<>(createdBoard, HttpStatus.CREATED);
+//    }
 
     @GetMapping("{boardId}")
     public ResponseEntity<BoardDTO> getBoards(@PathVariable("boardId") long boardId) {
@@ -62,12 +62,12 @@ public class BoardController {
         return ResponseEntity.ok("Board Deleted Successfully");
     }
 
-    @PostMapping("projects/{projectId}/default")
-//    @PermitAll
-//    @RolesAllowed({"ADMIN","ACCOUNT_MANGER"})
-    public ResponseEntity<String> addDefaultBoards(@PathVariable("projectId") long projectId) {
-        boardService.addDefaultBoards(projectId);
-        return ResponseEntity.ok("Default Boards Added Successfully");
-    }
+//    @PostMapping("projects/{projectId}/default")
+////    @PermitAll
+////    @RolesAllowed({"ADMIN","ACCOUNT_MANGER"})
+//    public ResponseEntity<String> addDefaultBoards(@PathVariable("projectId") long projectId) {
+//        boardService.addDefaultBoards(projectId);
+//        return ResponseEntity.ok("Default Boards Added Successfully");
+//    }
 
 }
