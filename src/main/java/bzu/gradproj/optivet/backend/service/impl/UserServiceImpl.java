@@ -1,7 +1,7 @@
 package bzu.gradproj.optivet.backend.service.impl;
 
 import bzu.gradproj.optivet.backend.dto.UserDTO;
-import bzu.gradproj.optivet.backend.exception.NoUserFoundException;
+//import bzu.gradproj.optivet.backend.exception.NoUserFoundException;
 import bzu.gradproj.optivet.backend.exception.ResourceNotFoundException;
 import bzu.gradproj.optivet.backend.mapper.UserMapper;
 import bzu.gradproj.optivet.backend.model.entity.FunctionalRole;
@@ -12,6 +12,7 @@ import bzu.gradproj.optivet.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import bzu.gradproj.optivet.backend.exception.NoUserFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -152,6 +153,7 @@ public class UserServiceImpl implements UserService {
 //        return Optional.empty();
 
         User user = userRepo.findByEmail(email).orElseThrow(() -> new NoUserFoundException(String.format("No user found with email '%s'.", email)));
+//        User user = userRepo.findByEmail(email).orElseThrow(() -> new NoUserFoundException(String.format("No user found with email '%s'.", email)));
 
 
 
