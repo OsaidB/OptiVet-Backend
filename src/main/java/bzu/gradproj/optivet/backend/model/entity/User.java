@@ -1,14 +1,13 @@
 package bzu.gradproj.optivet.backend.model.entity;
 
 import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
-
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -39,15 +38,15 @@ public class User implements Serializable {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false)
-    private FunctionalRole funcRole; // Functional role like BackEnd, FrontEnd, QA
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole role; // Specifies if the user is a Client, Manager, etc.
 
-    @Column(name = "is_team_leader", nullable = false)
-    private Boolean isTeamLeader; // Specifies if the user is a team leader
+    @Column(name = "phone_number")
+    private String phoneNumber; // Contact number for the user
 
-    @Column(name = "authorities")
-    private String authorities; // Roles such as Admin, Team Leader, Developer
+    @Column(name = "date_of_birth")
+    private LocalDate dateOfBirth; // User's date of birth (optional)
 
     @Column(name = "last_password_reset")
     private Date lastPasswordReset; // Time when the password was last reset
@@ -80,12 +79,17 @@ public class User implements Serializable {
                 ", email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", funcRole=" + funcRole +
-                ", isTeamLeader=" + isTeamLeader +
-                ", authorities='" + authorities + '\'' +
+                ", role=" + role +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
                 ", lastPasswordReset=" + lastPasswordReset +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    // Enum to define the different types of roles within the clinic
+    public enum UserRole {
+        CLIENT, VET_ASSISTANT, SECRETARY, MANAGER
     }
 }

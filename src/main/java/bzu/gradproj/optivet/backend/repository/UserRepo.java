@@ -4,7 +4,7 @@ import bzu.gradproj.optivet.backend.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
+//import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,7 +15,8 @@ public interface UserRepo extends JpaRepository<User, Long>, JpaSpecificationExe
 
 //    Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);
-    List<User> findUsersByFuncRoleFuncRoleId(Long roleId);
-    @Query("SELECT u FROM User u JOIN ProjectMember pm ON u.id = pm.user.id WHERE pm.project.projectId = :projectId")
-    List<User> findByProjectId(Long projectId);
+
+    List<User> findUsersByRole(User.UserRole role); // Find users by role (Client, Vet Assistant, etc.)
+
+    List<User> findUsersByPhoneNumber(String phoneNumber); // Optional: Find users by phone number
 }

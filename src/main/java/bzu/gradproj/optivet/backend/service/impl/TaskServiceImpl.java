@@ -49,15 +49,15 @@ public class TaskServiceImpl implements TaskService {
         Board board = boardRepo.findById(taskDTO.getBoardId())
                 .orElseThrow(() -> new ResourceNotFoundException("Board not found with id: " + taskDTO.getBoardId()));
 
-        List<User> projectMembers = userRepo.findByProjectId(taskDTO.getProjectId());
+//        List<User> projectMembers = userRepo.findByProjectId(taskDTO.getProjectId());
 
         User assignedTo = null;
-        if (taskDTO.getAssignedToUserId() != null) {
-            assignedTo = projectMembers.stream()
-                    .filter(user -> user.getId().equals(taskDTO.getAssignedToUserId()))
-                    .findFirst()
-                    .orElseThrow(() -> new ResourceNotFoundException("Assigned user is not a member of the project"));
-        }
+//        if (taskDTO.getAssignedToUserId() != null) {
+//            assignedTo = projectMembers.stream()
+//                    .filter(user -> user.getId().equals(taskDTO.getAssignedToUserId()))
+//                    .findFirst()
+//                    .orElseThrow(() -> new ResourceNotFoundException("Assigned user is not a member of the project"));
+//        }
 
         Task task = TaskMapper.INSTANCE.toTaskEntity(taskDTO);
         task.setAssignedTo(assignedTo);
@@ -107,13 +107,13 @@ public class TaskServiceImpl implements TaskService {
         task.setPriority(updatedTaskDTO.getPriority());
         task.setUpdatedAt(updatedTaskDTO.getUpdatedAt());
 
-        List<User> projectMembers = userRepo.findByProjectId(updatedTaskDTO.getProjectId());
+//        List<User> projectMembers = userRepo.findByProjectId(updatedTaskDTO.getProjectId());
         if (updatedTaskDTO.getAssignedToUserId() != null) {
-            User assignedTo = projectMembers.stream()
-                    .filter(user -> user.getId().equals(updatedTaskDTO.getAssignedToUserId()))
-                    .findFirst()
-                    .orElseThrow(() -> new ResourceNotFoundException("Assigned user is not a member of the project"));
-            task.setAssignedTo(assignedTo);
+//            User assignedTo = projectMembers.stream()
+//                    .filter(user -> user.getId().equals(updatedTaskDTO.getAssignedToUserId()))
+//                    .findFirst()
+//                    .orElseThrow(() -> new ResourceNotFoundException("Assigned user is not a member of the project"));
+//            task.setAssignedTo(assignedTo);
         }else {
             task.setAssignedTo(null);
         }

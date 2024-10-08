@@ -1,6 +1,7 @@
 package bzu.gradproj.optivet.backend.controller;
 
 import bzu.gradproj.optivet.backend.dto.UserDTO;
+import bzu.gradproj.optivet.backend.model.entity.User;
 import bzu.gradproj.optivet.backend.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -38,8 +39,8 @@ public class UserController {
     }
 
     @GetMapping("roles/{roleId}")
-    public ResponseEntity<List<UserDTO>> getUsersByRoleId(@PathVariable("roleId") long roleId) {
-        List<UserDTO> usersDTO = userService.getUsersByRoleId(roleId);
+    public ResponseEntity<List<UserDTO>> getUsersByRole(@PathVariable("roleId") User.UserRole role) {
+        List<UserDTO> usersDTO = userService.getUsersByRole(role);
         return ResponseEntity.ok(usersDTO);
     }
 
