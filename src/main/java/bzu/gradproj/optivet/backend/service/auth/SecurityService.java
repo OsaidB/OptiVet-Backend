@@ -1,7 +1,7 @@
-package bzu.gradproj.optivet.backend.service.auth;
-
-public interface SecurityService {
-
-  Boolean hasProtectedAccess();
-
-}
+//package bzu.gradproj.optivet.backend.service.auth;
+//
+//public interface SecurityService {
+//
+//  Boolean hasProtectedAccess();
+//
+//}
