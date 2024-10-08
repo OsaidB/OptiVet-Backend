@@ -38,15 +38,15 @@ public class UserController {
         return ResponseEntity.ok(usersDTO);
     }
 
-    @GetMapping("roles/{roleId}")
-    public ResponseEntity<List<UserDTO>> getUsersByRole(@PathVariable("roleId") User.UserRole role) {
+    @GetMapping("roles/{role}")
+    public ResponseEntity<List<UserDTO>> getUsersByRole(@PathVariable("role") User.UserRole role) {
         List<UserDTO> usersDTO = userService.getUsersByRole(role);
         return ResponseEntity.ok(usersDTO);
     }
 
     @PutMapping("{userId}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable("userId") long userId,
-                                              @Valid  @RequestBody UserDTO updatedUser) {
+                                              @Valid @RequestBody UserDTO updatedUser) {
         UserDTO userDto = userService.updateUser(userId, updatedUser);
         return ResponseEntity.ok(userDto);
     }

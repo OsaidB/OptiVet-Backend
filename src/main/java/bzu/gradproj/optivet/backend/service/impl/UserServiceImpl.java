@@ -1,19 +1,15 @@
 package bzu.gradproj.optivet.backend.service.impl;
 
 import bzu.gradproj.optivet.backend.dto.UserDTO;
-//import bzu.gradproj.optivet.backend.exception.NoUserFoundException;
 import bzu.gradproj.optivet.backend.exception.ResourceNotFoundException;
 import bzu.gradproj.optivet.backend.mapper.UserMapper;
-//import bzu.gradproj.optivet.backend.model.entity.FunctionalRole;
 import bzu.gradproj.optivet.backend.model.entity.User;
-//import bzu.gradproj.optivet.backend.repository.FuncRoleRepo;
 import bzu.gradproj.optivet.backend.repository.UserRepo;
 import bzu.gradproj.optivet.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import bzu.gradproj.optivet.backend.exception.NoUserFoundException;
-
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,40 +23,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private final UserRepo userRepo;
-//    @Autowired
-//    private FuncRoleRepo funcRoleRepo;
 
     public UserServiceImpl(UserRepo userRepo) {
         this.userRepo = userRepo;
-    }
-
-    public Optional<User> get(Long id) {
-        return userRepo.findById(id);
-    }
-
-    public User update(User entity) {
-        return userRepo.save(entity);
-    }
-
-    public void delete(Long id) {
-        userRepo.deleteById(id);
-    }
-
-    public Page<User> list(Pageable pageable) {
-        return userRepo.findAll(pageable);
-    }
-
-    public Page<User> list(Pageable pageable, Specification<User> filter) {
-        return userRepo.findAll(filter, pageable);
-    }
-
-    public int count() {
-        return (int) userRepo.count();
-    }
-
-    @Override
-    public UserDTO getUserByEmail(String email) {
-        return null;
     }
 
     @Override
@@ -84,7 +49,7 @@ public class UserServiceImpl implements UserService {
 
 //        Role role = FuncRoleRepo.findByRoleName(userDTO.getRole());
         if (userDTO.getRole() == null) {
-            throw new RuntimeException("FunctionalRole not found");
+            throw new RuntimeException("Role cannot be null");
         }
 
         User user = UserMapper.INSTANCE.toUserEntity(userDTO);
@@ -95,9 +60,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDTO getUserByEmail(String email) {
+        User user = userRepo.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
+        return UserMapper.INSTANCE.toUserDTO(user);
+    }
+
+    @Override
     public UserDTO getUserById(Long userId) {
         User user = userRepo.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User is not exists with given id: " + userId));
+                .orElseThrow(() -> new ResourceNotFoundException("User not exists with given id: " + userId));
         return UserMapper.INSTANCE.toUserDTO(user);
     }
 
@@ -109,8 +81,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> getUsersByRole(User.UserRole role) {
-//        funcRoleRepo.findById(roleId)
-//                .orElseThrow(() -> new ResourceNotFoundException("FunctionalRole not found with id : " + roleId));
         List<User> users = userRepo.findUsersByRole(role);
         return users.stream().map(UserMapper.INSTANCE::toUserDTO).collect(Collectors.toList());
     }
@@ -124,10 +94,10 @@ public class UserServiceImpl implements UserService {
 //        String role = funcRoleRepo.findById(updatedUser.getFunctionalRoleId())
 //                .orElseThrow(() -> new ResourceNotFoundException("Role not found with id : " + updatedUser.getFunctionalRoleId()));
         if (updatedUser.getRole() == null) {
-            throw new RuntimeException("Role not found");
+            throw new RuntimeException("Role cannot be null");
         }
 
-        user.setUpdatedAt(updatedUser.getUpdatedAt());
+//        user.setUpdatedAt(updatedUser.getUpdatedAt());
         user.setEmail(updatedUser.getEmail());
 
 //        user.setPassword(updatedUser.getPassword());
@@ -141,6 +111,8 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(updatedUser.getFirstName());
 
         user.setLastName(updatedUser.getLastName());
+        user.setRole(updatedUser.getRole());
+        user.setUpdatedAt(LocalDateTime.now()); // Set current time for updatedAt
 
         User updatedUserObj = userRepo.save(user);
         return UserMapper.INSTANCE.toUserDTO(updatedUserObj);
@@ -148,8 +120,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long userId) {
-        User user = userRepo.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User is not exists with given id: " + userId));
+        userRepo.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User does not exist with given id: " + userId));
         userRepo.deleteById(userId);
     }
 
