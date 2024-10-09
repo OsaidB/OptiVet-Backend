@@ -19,29 +19,29 @@ public class PetServiceImpl implements PetService {
 
     @Override
     public PetDTO createPet(PetDTO petDTO) {
-        Pet pet = PetMapper.INSTANCE.toPetEntity(petDTO);
+        Pet pet = PetMapper.toPetEntity(petDTO);
         Pet savedPet = petRepository.save(pet);
-        return PetMapper.INSTANCE.toPetDTO(savedPet);
+        return PetMapper.toPetDTO(savedPet);
     }
 
     @Override
     public PetDTO getPetById(Long petId) {
         Pet pet = petRepository.findById(petId)
                 .orElseThrow(() -> new ResourceNotFoundException("Pet not found with id: " + petId));
-        return PetMapper.INSTANCE.toPetDTO(pet);
+        return PetMapper.toPetDTO(pet);
     }
 
     @Override
     public List<PetDTO> getAllPets() {
         return petRepository.findAll().stream()
-                .map(PetMapper.INSTANCE::toPetDTO)
+                .map(PetMapper::toPetDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<PetDTO> getPetsByOwnerId(Long ownerId) {
         return petRepository.findByOwnerId(ownerId).stream()
-                .map(PetMapper.INSTANCE::toPetDTO)
+                .map(PetMapper::toPetDTO)
                 .collect(Collectors.toList());
     }
 
@@ -57,7 +57,7 @@ public class PetServiceImpl implements PetService {
         existingPet.setMedicalHistory(petDTO.getMedicalHistory());
 
         Pet updatedPet = petRepository.save(existingPet);
-        return PetMapper.INSTANCE.toPetDTO(updatedPet);
+        return PetMapper.toPetDTO(updatedPet);
     }
 
     @Override

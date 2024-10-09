@@ -17,7 +17,8 @@ import java.util.Objects;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "users")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Table(name = "users") // This is the table for the hierarchy
 public class User implements Serializable {
 
     private static final long serialVersionUID = 2353528370345499815L;
@@ -29,7 +30,8 @@ public class User implements Serializable {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
+    @Column()
     private String password;
 
     @Column(name = "first_name", nullable = false)

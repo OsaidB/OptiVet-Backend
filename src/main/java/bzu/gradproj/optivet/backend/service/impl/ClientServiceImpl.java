@@ -23,22 +23,22 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientDTO createClient(ClientDTO clientDTO) {
-        Client client = ClientMapper.INSTANCE.toClientEntity(clientDTO);
+        Client client = ClientMapper.toClientEntity(clientDTO);
         Client savedClient = clientRepo.save(client);
-        return ClientMapper.INSTANCE.toClientDTO(savedClient);
+        return ClientMapper.toClientDTO(savedClient);
     }
 
     @Override
     public ClientDTO getClientById(Long clientId) {
         Client client = clientRepo.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Client not found with id: " + clientId));
-        return ClientMapper.INSTANCE.toClientDTO(client);
+        return ClientMapper.toClientDTO(client);
     }
 
     @Override
     public List<ClientDTO> getAllClients() {
         return clientRepo.findAll().stream()
-                .map(ClientMapper.INSTANCE::toClientDTO)
+                .map(ClientMapper::toClientDTO)
                 .collect(Collectors.toList());
     }
 
@@ -53,7 +53,7 @@ public class ClientServiceImpl implements ClientService {
         client.setPhoneNumber(clientDTO.getPhoneNumber());
 
         Client updatedClient = clientRepo.save(client);
-        return ClientMapper.INSTANCE.toClientDTO(updatedClient);
+        return ClientMapper.toClientDTO(updatedClient);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class ClientServiceImpl implements ClientService {
 
         // Map the client's list of pets to PetDTO
         return client.getPets().stream()
-                .map(PetMapper.INSTANCE::toPetDTO)
+                .map(PetMapper::toPetDTO)
                 .collect(Collectors.toList());
     }
 }

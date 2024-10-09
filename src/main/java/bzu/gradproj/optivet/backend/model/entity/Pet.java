@@ -3,13 +3,11 @@ package bzu.gradproj.optivet.backend.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "pets")
 public class Pet {
@@ -29,10 +27,10 @@ public class Pet {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @Column(name = "medical_history", columnDefinition = "TEXT")
+    @Column(name = "medical_history",length = 1000) // Adjust length based on requirements
     private String medicalHistory;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
-    private Client owner;
+    private Client owner; // Use Client explicitly instead of User
 }
