@@ -2,12 +2,14 @@ package bzu.gradproj.optivet.backend.service.impl;
 
 import bzu.gradproj.optivet.backend.dto.PetDTO;
 import bzu.gradproj.optivet.backend.exception.ResourceNotFoundException;
+import bzu.gradproj.optivet.backend.mapper.ClientMapper;
 import bzu.gradproj.optivet.backend.mapper.PetMapper;
 import bzu.gradproj.optivet.backend.model.entity.Pet;
 import bzu.gradproj.optivet.backend.repository.PetRepository;
 import bzu.gradproj.optivet.backend.service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,31 +19,37 @@ public class PetServiceImpl implements PetService {
     @Autowired
     private PetRepository petRepository;
 
+    @Autowired
+    private ClientMapper clientMapper; // Injected ClientMapper instance
+
+    @Autowired
+    private PetMapper petMapper; // Injected PetMapper instance
+
     @Override
     public PetDTO createPet(PetDTO petDTO) {
-        Pet pet = PetMapper.toPetEntity(petDTO);
+        Pet pet = petMapper.toEntity(petDTO); // Use the injected mapper
         Pet savedPet = petRepository.save(pet);
-        return PetMapper.toPetDTO(savedPet);
+        return petMapper.toDTO(savedPet);
     }
 
     @Override
     public PetDTO getPetById(Long petId) {
         Pet pet = petRepository.findById(petId)
                 .orElseThrow(() -> new ResourceNotFoundException("Pet not found with id: " + petId));
-        return PetMapper.toPetDTO(pet);
+        return petMapper.toDTO(pet);
     }
 
     @Override
     public List<PetDTO> getAllPets() {
         return petRepository.findAll().stream()
-                .map(PetMapper::toPetDTO)
+                .map(petMapper::toDTO)  // Use the injected mapper
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<PetDTO> getPetsByOwnerId(Long ownerId) {
         return petRepository.findByOwnerId(ownerId).stream()
-                .map(PetMapper::toPetDTO)
+                .map(petMapper::toDTO)  // Use the injected mapper
                 .collect(Collectors.toList());
     }
 
@@ -57,7 +65,7 @@ public class PetServiceImpl implements PetService {
         existingPet.setMedicalHistory(petDTO.getMedicalHistory());
 
         Pet updatedPet = petRepository.save(existingPet);
-        return PetMapper.toPetDTO(updatedPet);
+        return petMapper.toDTO(updatedPet);
     }
 
     @Override

@@ -6,7 +6,6 @@ import bzu.gradproj.optivet.backend.exception.ResourceNotFoundException;
 import bzu.gradproj.optivet.backend.mapper.ClientMapper;
 import bzu.gradproj.optivet.backend.mapper.PetMapper;
 import bzu.gradproj.optivet.backend.model.entity.Client;
-import bzu.gradproj.optivet.backend.model.entity.Pet;
 import bzu.gradproj.optivet.backend.repository.ClientRepo;
 import bzu.gradproj.optivet.backend.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,24 +20,30 @@ public class ClientServiceImpl implements ClientService {
     @Autowired
     private ClientRepo clientRepo;
 
+    @Autowired
+    private ClientMapper clientMapper; // Injected ClientMapper instance
+
+    @Autowired
+    private PetMapper petMapper; // Injected PetMapper instance
+
     @Override
     public ClientDTO createClient(ClientDTO clientDTO) {
-        Client client = ClientMapper.toClientEntity(clientDTO);
+        Client client = clientMapper.toEntity(clientDTO);
         Client savedClient = clientRepo.save(client);
-        return ClientMapper.toClientDTO(savedClient);
+        return clientMapper.toDTO(savedClient);
     }
 
     @Override
     public ClientDTO getClientById(Long clientId) {
         Client client = clientRepo.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Client not found with id: " + clientId));
-        return ClientMapper.toClientDTO(client);
+        return clientMapper.toDTO(client);
     }
 
     @Override
     public List<ClientDTO> getAllClients() {
         return clientRepo.findAll().stream()
-                .map(ClientMapper::toClientDTO)
+                .map(clientMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -53,11 +58,14 @@ public class ClientServiceImpl implements ClientService {
         client.setPhoneNumber(clientDTO.getPhoneNumber());
 
         Client updatedClient = clientRepo.save(client);
-        return ClientMapper.toClientDTO(updatedClient);
+        return clientMapper.toDTO(updatedClient);
     }
 
     @Override
     public void deleteClient(Long clientId) {
+        if (!clientRepo.existsById(clientId)) {
+            throw new ResourceNotFoundException("Client not found with id: " + clientId);
+        }
         clientRepo.deleteById(clientId);
     }
 
@@ -66,9 +74,9 @@ public class ClientServiceImpl implements ClientService {
         Client client = clientRepo.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Client not found with id: " + clientId));
 
-        // Map the client's list of pets to PetDTO
+        // Map the client's list of pets to PetDTO using the injected PetMapper instance
         return client.getPets().stream()
-                .map(PetMapper::toPetDTO)
+                .map(petMapper::toDTO)
                 .collect(Collectors.toList());
     }
 }
