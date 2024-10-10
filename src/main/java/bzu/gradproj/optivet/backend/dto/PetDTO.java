@@ -27,4 +27,6 @@ public class PetDTO {
 
     @NotNull(message = "Owner ID cannot be null")
     private Long ownerId;
+
+    private String imageUrl; // New field to store the image URL
 }
