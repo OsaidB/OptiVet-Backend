@@ -29,8 +29,7 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private final UserRepo userRepo;
 
-    @Autowired
-    private final BoardRepo boardRepo;
+
 
     @Autowired
     private final CommentService commentService; // Add this
@@ -38,8 +37,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDTO createTask(TaskDTO taskDTO) {
 
-        Board board = boardRepo.findById(taskDTO.getBoardId())
-                .orElseThrow(() -> new ResourceNotFoundException("Board not found with id: " + taskDTO.getBoardId()));
+
 
 //        List<User> projectMembers = userRepo.findByProjectId(taskDTO.getProjectId());
 
@@ -53,7 +51,7 @@ public class TaskServiceImpl implements TaskService {
 
         Task task = TaskMapper.INSTANCE.toTaskEntity(taskDTO);
         task.setAssignedTo(assignedTo);
-        task.setBoard(board);
+//        task.setBoard(board);
 
         // Save the task with the due date
         Task savedTask = taskRepo.save(task);
