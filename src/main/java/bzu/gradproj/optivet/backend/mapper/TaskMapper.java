@@ -1,7 +1,6 @@
 package bzu.gradproj.optivet.backend.mapper;
 
 import bzu.gradproj.optivet.backend.dto.TaskDTO;
-import bzu.gradproj.optivet.backend.model.entity.Board;
 import bzu.gradproj.optivet.backend.model.entity.Task;
 import bzu.gradproj.optivet.backend.model.entity.User;
 import org.mapstruct.Mapper;
@@ -39,16 +38,4 @@ public interface TaskMapper {
         return user;
     }
 
-    default Long mapBoardToId(Board board) {
-        return board == null ? null : board.getBoardId();
-    }
-
-    default Board mapIdToBoard(Long boardId) {
-        if (boardId == null) {
-            return null;
-        }
-        Board board = new Board();
-        board.setBoardId(boardId);
-        return board;
-    }
 }

@@ -3,10 +3,8 @@ package bzu.gradproj.optivet.backend.service.impl;
 import bzu.gradproj.optivet.backend.dto.TaskDTO;
 import bzu.gradproj.optivet.backend.exception.ResourceNotFoundException;
 import bzu.gradproj.optivet.backend.mapper.TaskMapper;
-import bzu.gradproj.optivet.backend.model.entity.Board;
 import bzu.gradproj.optivet.backend.model.entity.Task;
 import bzu.gradproj.optivet.backend.model.entity.User;
-import bzu.gradproj.optivet.backend.repository.BoardRepo;
 import bzu.gradproj.optivet.backend.repository.TaskRepo;
 import bzu.gradproj.optivet.backend.repository.UserRepo;
 import bzu.gradproj.optivet.backend.service.TaskService;
@@ -85,9 +83,9 @@ public class TaskServiceImpl implements TaskService {
 
 
 
-        Board board = boardRepo.findById(updatedTaskDTO.getBoardId())
-                .orElseThrow(() -> new ResourceNotFoundException("Board not found with id: " + updatedTaskDTO.getBoardId()));
-        task.setBoard(board);
+//        Board board = boardRepo.findById(updatedTaskDTO.getBoardId())
+//                .orElseThrow(() -> new ResourceNotFoundException("Board not found with id: " + updatedTaskDTO.getBoardId()));
+//        task.setBoard(board);
 
         task.setTaskName(updatedTaskDTO.getTaskName());
 
