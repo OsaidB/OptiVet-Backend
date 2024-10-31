@@ -16,20 +16,18 @@ public class AppointmentDTO {
 
     private Long id;
 
-    @NotNull(message = "Client ID cannot be null")
+    // ClientId can be null when creating a new available slot
     private Long clientId;
 
-    @NotNull(message = "Pet ID cannot be null")
+    // PetId can be null when creating a new available slot
     private Long petId;
 
     @NotNull(message = "Appointment date cannot be null")
     private LocalDateTime appointmentDate;
 
-    private String status; // Use enum string representation like "SCHEDULED", "COMPLETED", etc.
+    @NotNull(message = "Status cannot be null")
+    private String status = "AVAILABLE";  // Default status: AVAILABLE
 
     @NotNull(message = "Vet ID cannot be null")
-    private Long vetId;  // New field to link the appointment with a vet
-
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private Long vetId;  // Must have a vet associated
 }
