@@ -33,6 +33,7 @@ public class SurgeoriesServiceImpl implements SurgeoriesService {
 
 
     @Override
+    @Transactional
     public SurgeoriesDTO createSurgeory(SurgeoriesDTO surgeoryDTO, Long petId) {
 
 
@@ -63,6 +64,7 @@ public class SurgeoriesServiceImpl implements SurgeoriesService {
 
 
     @Override
+    @Transactional
     public void deleteSurgeory(Long allergyId) {
         if (!surgeoriesRepo.existsById(allergyId)) {
             throw new ResourceNotFoundException("Pet not found with id: " + allergyId);

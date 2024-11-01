@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -29,6 +30,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDTO createUser(UserDTO userDTO) {
 //        FunctionalRole role = funcRoleRepo.findById(userDTO.getFunctionalRoleId())
 //                .orElseThrow(() -> new ResourceNotFoundException("FunctionalRole not found with id : " + userDTO.getFunctionalRoleId()));
@@ -60,6 +62,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDTO getUserByEmail(String email) {
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
@@ -67,6 +70,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDTO getUserById(Long userId) {
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not exists with given id: " + userId));
@@ -74,18 +78,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public List<UserDTO> getAllUsers() {
         List<User> users = userRepo.findAll();
         return users.stream().map(UserMapper.INSTANCE::toUserDTO).collect(Collectors.toList());
     }
 
     @Override
+    @Transactional
     public List<UserDTO> getUsersByRole(User.UserRole role) {
         List<User> users = userRepo.findUsersByRole(role);
         return users.stream().map(UserMapper.INSTANCE::toUserDTO).collect(Collectors.toList());
     }
 
     @Override
+    @Transactional
     public UserDTO updateUser(Long userId, UserDTO updatedUser) {
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User does not exist with the given id: " + userId));
@@ -119,6 +126,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long userId) {
         userRepo.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User does not exist with given id: " + userId));

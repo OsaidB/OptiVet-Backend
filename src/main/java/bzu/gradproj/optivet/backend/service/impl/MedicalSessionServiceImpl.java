@@ -10,6 +10,8 @@ import bzu.gradproj.optivet.backend.service.MedicalSessionService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +26,7 @@ public class MedicalSessionServiceImpl implements MedicalSessionService {
 
 
     @Override
+    @Transactional
     public MedicalSessionDTO createSession(MedicalSessionDTO medicalSessionDTO, Long veterinarianId) {
         // Fetch the veterinarian (User entity) using the veterinarianId
         User veterinarian = userRepo.findById(veterinarianId)
@@ -42,6 +45,8 @@ public class MedicalSessionServiceImpl implements MedicalSessionService {
         return medicalSessionMapper.toDTO(savedSession);
     }
     @Override
+
+
     public MedicalSessionDTO updateSession(Long sessionId, MedicalSessionDTO medicalSessionDTO) {
         MedicalSession existingSession = medicalSessionRepo.findById(sessionId)
                 .orElseThrow(() -> new RuntimeException("Medical session not found"));

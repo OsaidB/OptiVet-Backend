@@ -83,10 +83,11 @@ public class MedicalHistoryServiceImpl implements MedicalHistoryService {
     }
 
 
-    @Override
-    public void deleteMedicalHistory(Long medicalHistoryId) {
-        medicalHistoryRepo.deleteById(medicalHistoryId);
-    }
+//    @Override
+//    @Transactional
+//    public void deleteMedicalHistory(Long medicalHistoryId) {
+//        medicalHistoryRepo.deleteById(medicalHistoryId);
+//    }
 
 
 

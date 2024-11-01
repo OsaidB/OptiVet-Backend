@@ -22,11 +22,11 @@ public class MedicalHistoryController {
 
 
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMedicalHistory(@PathVariable Long id) {
-        medicalHistoryService.deleteMedicalHistory(id);
-        return ResponseEntity.noContent().build();
-    }
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Void> deleteMedicalHistory(@PathVariable Long id) {
+//        medicalHistoryService.deleteMedicalHistory(id);
+//        return ResponseEntity.noContent().build();
+//    }
 
 
 

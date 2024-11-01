@@ -32,6 +32,7 @@ public class VaccinationsServiceImpl implements VaccinationsService {
 
 
     @Override
+    @Transactional
     public VaccinationsDTO createVaccination(VaccinationsDTO vaccinationDTO, Long petId) {
 
 
@@ -61,6 +62,7 @@ public class VaccinationsServiceImpl implements VaccinationsService {
 
 
     @Override
+    @Transactional
     public void deleteVaccination(Long vaccinationId) {
         vaccinationsRepo.deleteById(vaccinationId);
     }

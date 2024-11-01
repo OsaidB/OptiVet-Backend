@@ -11,6 +11,7 @@ import bzu.gradproj.optivet.backend.repository.PetRepository;
 import bzu.gradproj.optivet.backend.service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 //repoPet
 @Service
+
 public class PetServiceImpl implements PetService {
 
     @Autowired
@@ -35,6 +37,7 @@ public class PetServiceImpl implements PetService {
     private PetMapper petMapper; // Injected PetMapper instance
 
     @Override
+    @Transactional
     public PetDTO createPet(PetDTO petDTO) {
         Pet pet = petMapper.toEntity(petDTO); // Use the injected mapper
        // pet.setMedicalHistoryy(medicalHistoryRepo.save(new MedicalHistory()));
@@ -49,6 +52,7 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
+    @Transactional
     public PetDTO getPetById(Long petId) {
         Pet pet = petRepository.findById(petId)
                 .orElseThrow(() -> new ResourceNotFoundException("Pet not found with id: " + petId));
@@ -56,6 +60,7 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
+    @Transactional
     public List<PetDTO> getAllPets() {
         return petRepository.findAll().stream()
                 .map(petMapper::toDTO)  // Use the injected mapper
@@ -63,6 +68,7 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
+    @Transactional
     public List<PetDTO> getPetsByOwnerId(Long ownerId) {
         return petRepository.findByOwnerId(ownerId).stream()
                 .map(petMapper::toDTO)  // Use the injected mapper
@@ -70,6 +76,7 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
+    @Transactional
     public PetDTO updatePet(Long petId, PetDTO petDTO) {
         Pet existingPet = petRepository.findById(petId)
                 .orElseThrow(() -> new ResourceNotFoundException("Pet not found with id: " + petId));
@@ -85,6 +92,7 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
+    @Transactional
     public void deletePet(Long petId) {
         if (!petRepository.existsById(petId)) {
             throw new ResourceNotFoundException("Pet not found with id: " + petId);
