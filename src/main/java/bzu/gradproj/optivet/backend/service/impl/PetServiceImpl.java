@@ -4,7 +4,9 @@ import bzu.gradproj.optivet.backend.dto.PetDTO;
 import bzu.gradproj.optivet.backend.exception.ResourceNotFoundException;
 import bzu.gradproj.optivet.backend.mapper.ClientMapper;
 import bzu.gradproj.optivet.backend.mapper.PetMapper;
+import bzu.gradproj.optivet.backend.model.entity.MedicalHistory;
 import bzu.gradproj.optivet.backend.model.entity.Pet;
+import bzu.gradproj.optivet.backend.repository.MedicalHistoryRepo;
 import bzu.gradproj.optivet.backend.repository.PetRepository;
 import bzu.gradproj.optivet.backend.service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +15,21 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+//repoPet
 @Service
 public class PetServiceImpl implements PetService {
 
     @Autowired
     private PetRepository petRepository;
 
+    //    @Autowired
+//    private MedicalHistoryRepo medicalHistoryRepository;
     @Autowired
     private ClientMapper clientMapper; // Injected ClientMapper instance
+
+    @Autowired
+    private MedicalHistoryRepo medicalHistoryRepo; // Injected ClientMapper instance
 
     @Autowired
     private PetMapper petMapper; // Injected PetMapper instance
@@ -28,7 +37,14 @@ public class PetServiceImpl implements PetService {
     @Override
     public PetDTO createPet(PetDTO petDTO) {
         Pet pet = petMapper.toEntity(petDTO); // Use the injected mapper
+       // pet.setMedicalHistoryy(medicalHistoryRepo.save(new MedicalHistory()));
+        MedicalHistory medicalHistory=new MedicalHistory();
+//        medicalHistory.setPet(pet);
+        pet.setMedicalHistoryy(medicalHistory);
+
         Pet savedPet = petRepository.save(pet);
+//medicalHistoryRepo.save(medicalHistory);
+
         return petMapper.toDTO(savedPet);
     }
 

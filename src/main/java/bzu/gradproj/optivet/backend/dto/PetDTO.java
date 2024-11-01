@@ -1,5 +1,6 @@
 package bzu.gradproj.optivet.backend.dto;
 
+import bzu.gradproj.optivet.backend.model.entity.MedicalHistory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,12 +22,18 @@ public class PetDTO {
     @NotNull(message = "Pet type cannot be null")
     private String type;
 
+
+
     private String breed;
     private LocalDate birthDate;
     private String medicalHistory;
 
     @NotNull(message = "Owner ID cannot be null")
     private Long ownerId;
+
+
+    private MedicalHistoryDTO medicalHistoryy;
+
 
     private String imageUrl; // New field to store the image URL
 }

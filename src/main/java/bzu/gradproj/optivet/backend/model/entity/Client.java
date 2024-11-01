@@ -52,6 +52,7 @@ public class Client {
     private LocalDateTime updatedAt;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+//@OneToMany(cascade = CascadeType.ALL)
     private List<Pet> pets;
 
     @Override

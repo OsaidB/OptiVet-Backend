@@ -14,12 +14,14 @@ public interface PetMapper {
 
     @Mappings({
             @Mapping(source = "owner.id", target = "ownerId"),
+//            @Mapping(source = "medicalHistoryy.id", target = "medicalHistoryy")
     })
     PetDTO toDTO(Pet pet);
 
 
     @Mappings({
             @Mapping(source = "ownerId", target = "owner.id"),
+//            @Mapping(source = "medicalHistoryy", target = "medicalHistoryy.id")
     })
     Pet toEntity(PetDTO petDTO);
 }

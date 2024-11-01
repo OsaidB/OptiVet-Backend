@@ -33,6 +33,10 @@ public class Pet {
     @Column(name = "image_url") // New column to store the image URL
     private String imageUrl;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "medicalHistory_id",nullable = false)
+    private MedicalHistory medicalHistoryy;
+
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
     private Client owner; // Use Client explicitly instead of User

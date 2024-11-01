@@ -21,6 +21,8 @@ public class MedicalSessionServiceImpl implements MedicalSessionService {
     private final MedicalSessionMapper medicalSessionMapper;
     private final UserRepo userRepo;
 
+
+
     @Override
     public MedicalSessionDTO createSession(MedicalSessionDTO medicalSessionDTO, Long veterinarianId) {
         // Fetch the veterinarian (User entity) using the veterinarianId
