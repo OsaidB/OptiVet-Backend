@@ -42,9 +42,9 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public List<ClientDTO> getAllClients() {
-        return clientRepo.findAll().stream()
-                .map(clientMapper::toDTO)
-                .collect(Collectors.toList());
+        // Use findAllWithPets to ensure pets are loaded with clients
+        List<Client> clients = clientRepo.findAll();
+        return clientMapper.toDTOList(clients);
     }
 
     @Override

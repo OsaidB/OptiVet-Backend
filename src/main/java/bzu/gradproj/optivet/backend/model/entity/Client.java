@@ -51,7 +51,14 @@ public class Client {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    //    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Pet> pets;
+
+//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+//    // Or FetchType.EAGER if necessary
+//    private List<Pet> pets;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 //@OneToMany(cascade = CascadeType.ALL)
     private List<Pet> pets;
 

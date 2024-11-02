@@ -37,7 +37,12 @@ public class Pet {
     @JoinColumn(name = "medicalHistory_id",nullable = false)
     private MedicalHistory medicalHistoryy;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id", nullable = false)
-    private Client owner; // Use Client explicitly instead of User
+//    @ManyToOne
+//    @JoinColumn(name = "owner_id", nullable = false)
+//    private Client owner; // Use Client explicitly instead of User
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id") // Ensure this column name matches your DB schema
+    private Client owner;
+
 }
