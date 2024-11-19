@@ -9,4 +9,6 @@ import java.util.List;
 public interface PetRepository extends JpaRepository<Pet, Long> {
     List<Pet> findByOwnerId(Long ownerId);
 
+    // New method to find pets by residency
+    List<Pet> findByResidencyType(Pet.ResidencyType residencyType);
 }
