@@ -77,6 +77,15 @@ public class PetServiceImpl implements PetService {
 
     @Override
     @Transactional
+    public List<PetDTO> getPetsByResidencyType(Pet.ResidencyType residencyType) {
+        return petRepository.findByResidencyType(residencyType).stream()
+                .map(petMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
+    @Transactional
     public PetDTO updatePet(Long petId, PetDTO petDTO) {
         Pet existingPet = petRepository.findById(petId)
                 .orElseThrow(() -> new ResourceNotFoundException("Pet not found with id: " + petId));

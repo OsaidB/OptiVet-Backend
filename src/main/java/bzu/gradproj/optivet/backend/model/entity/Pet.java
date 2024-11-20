@@ -45,4 +45,15 @@ public class Pet {
     @JoinColumn(name = "client_id") // Ensure this column name matches your DB schema
     private Client owner;
 
+    // New enum attribute for ResidencyType
+    @Enumerated(EnumType.STRING)
+    @Column(name = "residency_type", nullable = true)
+    private ResidencyType residencyType; // Default value is null
+
+    public enum ResidencyType {
+        INPATIENT_CARE,
+        UNCLAIMED,
+        ABANDONED
+    }
+
 }

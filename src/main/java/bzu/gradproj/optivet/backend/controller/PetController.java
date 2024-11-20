@@ -1,6 +1,7 @@
 package bzu.gradproj.optivet.backend.controller;
 
 import bzu.gradproj.optivet.backend.dto.PetDTO;
+import bzu.gradproj.optivet.backend.model.entity.Pet;
 import bzu.gradproj.optivet.backend.service.PetService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -106,6 +107,12 @@ public class PetController {
     @GetMapping("owner/{ownerId}")
     public ResponseEntity<List<PetDTO>> getPetsByOwnerId(@PathVariable("ownerId") Long ownerId) {
         List<PetDTO> pets = petService.getPetsByOwnerId(ownerId);
+        return ResponseEntity.ok(pets);
+    }
+
+    @GetMapping("/residency/{residencyType}")
+    public ResponseEntity<List<PetDTO>> getPetsByResidencyType(@PathVariable("residencyType") Pet.ResidencyType residencyType) {
+        List<PetDTO> pets = petService.getPetsByResidencyType(residencyType);
         return ResponseEntity.ok(pets);
     }
 
