@@ -27,7 +27,7 @@ public class Product {
     private String name;
 
 
-    @Column(name = "productCategory")
+    @Column(name = "productCategory", nullable = false)
     @Enumerated(EnumType.STRING)
     private ProductCategory productCategory;
 
@@ -37,5 +37,7 @@ public class Product {
 
 
 
-
+    public enum ProductCategory {
+        FOOD, TREATS, TOYS, COLLARS;
+    }
 }

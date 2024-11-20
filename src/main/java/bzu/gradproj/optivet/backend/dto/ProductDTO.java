@@ -1,6 +1,6 @@
 package bzu.gradproj.optivet.backend.dto;
 
-import bzu.gradproj.optivet.backend.model.entity.ProductCategory;
+//import bzu.gradproj.optivet.backend.model.entity.ProductCategory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +18,7 @@ public class ProductDTO {
     @NotNull(message = "Product name cannot be null")
     private String name;
 
-    @NotNull(message = "Prosuct category cannot be null")
+    @NotNull(message = "Product category cannot be null")
     private String productCategory;
 
 

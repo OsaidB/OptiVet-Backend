@@ -25,50 +25,12 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO createProduct(ProductDTO productDTO) {
 
         Product product = productMapper.toEntity(productDTO);
-        //product.setId(productDTO.getId());
-        product.setName(productDTO.getName());
 
-      //  product.setProductCategory(ProductCategory.);
-        //product.setQuantity(productDTO.getQuantity());
         Product savedProduct = productRepo.save(product);
-        //savedProduct.setProductCategory(productDTO.getProductCategory());
+
         return productMapper.toDTO(savedProduct);
     }
 
-
-//    @Override
-//    public AllergiesDTO createAllergy(AllergiesDTO allergyDTO, Long petId) {
-//
-//
-//
-//        allergyDTO.setMedicalHistoryId(petRepo.findById(petId).get().getMedicalHistoryy().getId());
-//
-//        Allergies allergy = allergiesMapper.toEntity(allergyDTO);
-//
-//        MedicalHistory medicalHistory = medRepo.findById(allergyDTO.getMedicalHistoryId())
-//                .orElseThrow(() -> new RuntimeException("Medical history not found"));
-//        allergy.setMedicalHistory(medicalHistory);
-//
-//        Allergies savedAllergy = allergiesRepo.save(allergy);
-//        return allergiesMapper.toDTO(savedAllergy);
-//
-//    }
-
-
-//    private Long id;
-//
-//    @NotNull(message = "Product name cannot be null")
-//    private String name;
-//
-//    @NotNull(message = "Prosuct category cannot be null")
-//    private String productCategory;
-//
-//
-//    private int quantity;
-//
-//
-//    //   @NotNull(message = "Medical_history ID cannot be null")
-//    private Long orderId;
 
     @Override
     public ProductDTO updateProduct(ProductDTO productDTO, Long productId) {
@@ -100,3 +62,38 @@ public class ProductServiceImpl implements ProductService {
 
 
 }
+
+
+//@Transactional
+//@Override
+//public ProductDTO createProduct(ProductDTO productDTO) {
+//
+//    Product product = productMapper.toEntity(productDTO);
+//    //product.setId(productDTO.getId());
+//    //product.setName(productDTO.getName());
+//
+//    //  product.setProductCategory(ProductCategory.);
+//    //product.setQuantity(productDTO.getQuantity());
+//    Product savedProduct = productRepo.save(product);
+//    //savedProduct.setProductCategory(productDTO.getProductCategory());
+//    return productMapper.toDTO(savedProduct);
+//}
+
+
+//    @Override
+//    public AllergiesDTO createAllergy(AllergiesDTO allergyDTO, Long petId) {
+//
+//
+//
+//        allergyDTO.setMedicalHistoryId(petRepo.findById(petId).get().getMedicalHistoryy().getId());
+//
+//        Allergies allergy = allergiesMapper.toEntity(allergyDTO);
+//
+//        MedicalHistory medicalHistory = medRepo.findById(allergyDTO.getMedicalHistoryId())
+//                .orElseThrow(() -> new RuntimeException("Medical history not found"));
+//        allergy.setMedicalHistory(medicalHistory);
+//
+//        Allergies savedAllergy = allergiesRepo.save(allergy);
+//        return allergiesMapper.toDTO(savedAllergy);
+//
+//    }
