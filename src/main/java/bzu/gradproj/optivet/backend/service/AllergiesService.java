@@ -12,16 +12,16 @@ public interface AllergiesService {
 
 
 
-    public AllergiesDTO createAllergy(AllergiesDTO allergyDTO, Long petId) ;
+     AllergiesDTO createAllergy(AllergiesDTO allergyDTO, Long petId) ;
 
 
 
 
 
-    public List<AllergiesDTO> getAllergiesByPetId(Long petId);
+     List<AllergiesDTO> getAllergiesByPetId(Long petId);
 
 
-    public void deleteAllergy(Long allergyId);
+     void deleteAllergy(Long allergyId);
 
 
 }

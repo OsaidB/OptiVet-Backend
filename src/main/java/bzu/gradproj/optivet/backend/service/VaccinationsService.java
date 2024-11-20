@@ -11,12 +11,12 @@ import java.util.stream.Collectors;
 public interface VaccinationsService {
 
 
-    public VaccinationsDTO createVaccination(VaccinationsDTO vaccinationsDTO, Long petId);
+     VaccinationsDTO createVaccination(VaccinationsDTO vaccinationsDTO, Long petId);
 
-    public List<VaccinationsDTO> getVaccinationsByPetId(Long petId);
+     List<VaccinationsDTO> getVaccinationsByPetId(Long petId);
 
 
-    public void deleteVaccination(Long VaccinationId);
+     void deleteVaccination(Long VaccinationId);
 
 
 }

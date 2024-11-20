@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface ChronicConditionsService {
 
-    public ChronicConditionsDTO createChronicCondition(ChronicConditionsDTO chronicConditionDTO, Long petId);
+     ChronicConditionsDTO createChronicCondition(ChronicConditionsDTO chronicConditionDTO, Long petId);
 
-    public List<ChronicConditionsDTO> getChronicConditionsByPetId(Long petId);
+     List<ChronicConditionsDTO> getChronicConditionsByPetId(Long petId);
 
 
 
-    public void deleteChronicCondition(Long chronicConditionId);
+     void deleteChronicCondition(Long chronicConditionId);
 }

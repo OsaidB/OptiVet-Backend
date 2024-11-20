@@ -13,16 +13,16 @@ public interface SurgeoriesService {
 
 
 
-    public SurgeoriesDTO createSurgeory(SurgeoriesDTO surgeoryDTO, Long petId) ;
+     SurgeoriesDTO createSurgeory(SurgeoriesDTO surgeoryDTO, Long petId) ;
 
 
 
 
 
-    public List<SurgeoriesDTO> getSurgeoriesByPetId(Long petId);
+     List<SurgeoriesDTO> getSurgeoriesByPetId(Long petId);
 
 
-    public void deleteSurgeory(Long surgeoryId);
+     void deleteSurgeory(Long surgeoryId);
 
 
 }
