@@ -50,6 +50,9 @@ public class User implements Serializable {
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth; // User's date of birth (optional)
 
+    @Column(name = "authorities")
+    private String authorities; // Roles such as Admin, Team Leader, Developer
+
     @Column(name = "last_password_reset")
     private Date lastPasswordReset; // Time when the password was last reset
 

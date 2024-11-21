@@ -1,6 +1,7 @@
 package bzu.gradproj.optivet.backend.service.impl;
 
 import bzu.gradproj.optivet.backend.dto.UserDTO;
+import bzu.gradproj.optivet.backend.exception.NoUserFoundException;
 import bzu.gradproj.optivet.backend.exception.ResourceNotFoundException;
 import bzu.gradproj.optivet.backend.mapper.UserMapper;
 import bzu.gradproj.optivet.backend.model.entity.User;
@@ -144,4 +145,15 @@ public class UserServiceImpl implements UserService {
 //
 //        return UserMapper.INSTANCE.toUserDTO(user);
 //    }
+
+    @Override
+    public UserDTO getUserByUsername(String email) {
+//        return Optional.empty();
+
+        User user = userRepo.findByEmail(email).orElseThrow(() -> new NoUserFoundException(String.format("No user found with email '%s'.", email)));
+
+
+
+        return UserMapper.INSTANCE.toUserDTO(user);
+    }
 }
