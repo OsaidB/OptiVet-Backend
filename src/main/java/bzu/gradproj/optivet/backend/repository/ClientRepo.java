@@ -24,6 +24,8 @@ public interface ClientRepo extends JpaRepository<Client, Long>, JpaSpecificatio
     @NotNull
     Optional<Client> findById(@NotNull Long id);
 
+    Optional<Client> findByEmail(String email);
+
     @EntityGraph(attributePaths = "pets")
     @NotNull
     List<Client> findAll(); // This method will automatically load clients with pets

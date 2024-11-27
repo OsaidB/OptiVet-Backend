@@ -3,26 +3,31 @@ package bzu.gradproj.optivet.backend.model.factory;
 
 //import bzu.gradproj.optivet.backend.model.entity.entity.User_2;
 
-import bzu.gradproj.optivet.backend.model.entity.User;
+//import bzu.gradproj.optivet.backend.model.entity.User;
+import bzu.gradproj.optivet.backend.model.entity.Client;
 import bzu.gradproj.optivet.backend.model.security.SecurityUser;
 import org.springframework.security.core.authority.AuthorityUtils;
 
+import java.util.Collections;
+
 public class UserFactory {
 
-    public static SecurityUser create(User user2) {
+    public static SecurityUser create(Client client) {
         // Converts a User entity
         // into a SecurityUser object,
         // which is used by Spring Security
 
         return new SecurityUser(
-                user2.getId(),
+                client.getId(),
 //      user2.getUsername(),
-                user2.getEmail(),// we use email here, which is treated as the username in SecurityUser
+                client.getEmail(),// we use email here, which is treated as the username in SecurityUser
                 //we take it from user entity as an email, but then take it from securityUser as username
 
-                user2.getPassword(),
-                user2.getLastPasswordReset(),
-                AuthorityUtils.commaSeparatedStringToAuthorityList(user2.getAuthorities())
+                client.getPassword(),
+                client.getLastPasswordReset(),
+                Collections.emptyList() // No roles or authorities
+
+//                AuthorityUtils.commaSeparatedStringToAuthorityList(user2.getAuthorities())
                 //// Converts comma-separated authorities into a list of GrantedAuthority objects
         );
     }

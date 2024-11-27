@@ -78,4 +78,10 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);//ensures that the request continues to the next filter in the chain.
     }
 
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        return path.startsWith("/auth");
+    }
+
 }

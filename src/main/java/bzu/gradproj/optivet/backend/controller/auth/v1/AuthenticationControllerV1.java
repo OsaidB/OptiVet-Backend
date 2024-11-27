@@ -1,6 +1,7 @@
 package bzu.gradproj.optivet.backend.controller.auth.v1;
 
 import bzu.gradproj.optivet.backend.dto.auth.*;
+import bzu.gradproj.optivet.backend.model.entity.Client;
 import bzu.gradproj.optivet.backend.model.entity.User;
 //import bzu.gradproj.optivet.backend.service.auth.AuthService;
 import bzu.gradproj.optivet.backend.service.auth.AuthService;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin("*")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth") // Add this annotation to handle routing
@@ -33,8 +35,8 @@ public class AuthenticationControllerV1 extends BaseController {
   }
 
   @PostMapping("/register")
-  public ResponseEntity<User> registerUser(@RequestBody @Valid RegisterRequest registerRequest) {
-    User createdUser= this.authenticationService.registerUser(registerRequest);
+  public ResponseEntity<Client> registerUser(@RequestBody @Valid RegisterRequest registerRequest) {
+    Client createdUser= this.authenticationService.registerUser(registerRequest);
     return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
   }
   @PostMapping("/password-reset")

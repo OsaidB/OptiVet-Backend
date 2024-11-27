@@ -12,13 +12,15 @@ import java.util.Date;
 public class NoUserFoundAdvice {
 
     @ExceptionHandler(NoUserFoundException.class)
-    public ResponseEntity<ApiErrorMessage> resourceNotFoundException(NoUserFoundException ex, WebRequest request) {
+    public ResponseEntity<ApiErrorMessage> handleNoUserFoundException(NoUserFoundException ex, WebRequest request) {
         ApiErrorMessage message = ApiErrorMessage.builder()
-                .statusCode(HttpStatus.NOT_FOUND.value())
+//                .statusCode(HttpStatus.NOT_FOUND.value())
                 .timestamp(new Date())
-                .message(ex.getMessage())
-                .description(request.getDescription(false))
+                .message("Account with this email not found.") // User-friendly message
+                .description("Please double-check the email or register a new account.") // Actionable description
                 .build();
-        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        // Return 200 OK with a custom response for better user experience
+        return ResponseEntity.ok(message);
+//        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND); // Still returning 404 for clarity in logs
     }
 }

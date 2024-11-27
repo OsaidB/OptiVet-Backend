@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 public class RegisterRequest extends ModelBase {
@@ -32,7 +34,7 @@ public class RegisterRequest extends ModelBase {
 
     @NotNull(message = "Last name must be provided")
     private String lastName;
-
+/*
     @NotNull(message = "Functional role must be provided")
     private Long functionalRoleId; // This should match the type used for functional roles
 
@@ -43,10 +45,18 @@ public class RegisterRequest extends ModelBase {
 
 
     private String authorities; // Optional, based on your application's requirements
-
+*/
     /**
      * Represents a request to register a new user, including all required details for registration.
      * Fields are validated to ensure completeness and correctness for user creation.
      */
+
+    @NotNull(message = "Phone number must be provided")
+    private String phoneNumber;
+
+    @NotNull(message = "Date of birth must be provided")
+    private LocalDate dateOfBirth;
+
+    // Removed fields specific to roles and authorities not in ClientDTO
 }
 

@@ -7,14 +7,19 @@ import bzu.gradproj.optivet.backend.dto.auth.PasswordResetRequest;
 import javax.mail.*;
 import javax.mail.internet.*;
 import java.util.Properties;
+import java.time.LocalDateTime;
 
 import bzu.gradproj.optivet.backend.dto.auth.PasswordResetConfirmRequest;
 import bzu.gradproj.optivet.backend.dto.auth.RegisterRequest;
-import bzu.gradproj.optivet.backend.model.entity.FunctionalRole;
-import bzu.gradproj.optivet.backend.model.entity.User;
+
+//import bzu.gradproj.optivet.backend.model.entity.FunctionalRole;
+//import bzu.gradproj.optivet.backend.model.entity.User;
+import bzu.gradproj.optivet.backend.model.entity.Client;
 import bzu.gradproj.optivet.backend.model.security.SecurityUser;
-import bzu.gradproj.optivet.backend.repository.UserRepo;
-import bzu.gradproj.optivet.backend.repository.FuncRoleRepo;
+//import bzu.gradproj.optivet.backend.repository.UserRepo;
+//import bzu.gradproj.optivet.backend.repository.FuncRoleRepo;
+import bzu.gradproj.optivet.backend.repository.ClientRepo;
+
 import bzu.gradproj.optivet.backend.security.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +51,9 @@ public class AuthServiceImpl implements AuthService/*custom class*/ {
     private final UserDetailsService userDetailsService;    //prebuilt from spring security
 
     @Autowired
-    private final UserRepo userRepo;
-    @Autowired
-    private final FuncRoleRepo funcRoleRepo;
+    private final ClientRepo clientRepo; // Updated to ClientRepo
+//    @Autowired
+//    private final FuncRoleRepo funcRoleRepo;
     /**
      * Authenticates the user based on provided credentials and generates a JWT token.
      *
@@ -84,10 +89,12 @@ public class AuthServiceImpl implements AuthService/*custom class*/ {
     }
 
     @Override
-    public User registerUser(RegisterRequest registerRequest) {
+    public Client registerUser(RegisterRequest registerRequest) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String hashedPassword = passwordEncoder.encode(registerRequest.getPassword());
         // Since we're no longer using the username, it is removed from the builder
+
+        /*
         FunctionalRole functionalRole = funcRoleRepo.findById(registerRequest.getFunctionalRoleId())
                 .orElseThrow(() -> new RuntimeException("FunctionalRole not found"));
 
@@ -107,13 +114,29 @@ public class AuthServiceImpl implements AuthService/*custom class*/ {
                 .firstName(registerRequest.getFirstName()) // Ensure firstName is set
                 .lastName(registerRequest.getLastName()) // Ensure lastName is set
 
-                .funcRole(functionalRole)
+//                .funcRole(functionalRole)
 
-                .isTeamLeader(registerRequest.getIsTeamLeader()) // Set team leader status
+//                .isTeamLeader(registerRequest.getIsTeamLeader()) // Set team leader status
                 .lastPasswordReset(new Date()) // Set the last password reset date
-                .authorities(authorities) // Set authorities or roles as needed
+//                .authorities(authorities) // Set authorities or roles as needed
                 .build();
         return userRepo.save(newUser);
+
+    */
+
+        // Build a new Client instance with the provided details
+        Client newClient = new Client();
+        newClient.setEmail(registerRequest.getEmail());
+        newClient.setPassword(hashedPassword);
+        newClient.setFirstName(registerRequest.getFirstName());
+        newClient.setLastName(registerRequest.getLastName());
+        newClient.setPhoneNumber(registerRequest.getPhoneNumber());
+        newClient.setDateOfBirth(registerRequest.getDateOfBirth());
+        newClient.setCreatedAt(LocalDateTime.now());
+        newClient.setUpdatedAt(LocalDateTime.now());
+
+        return clientRepo.save(newClient);
+
     }
 
     // New method to initiate password reset
@@ -124,26 +147,35 @@ public class AuthServiceImpl implements AuthService/*custom class*/ {
         String email = passwordResetRequest.getEmail();
 
         // Fetch the user from the repository
-        User user = userRepo.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
+//        User user = userRepo.findByEmail(email)
+//                .orElseThrow(() -> new RuntimeException("User not found"));
+        Client client = clientRepo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Client not found"));
+/*
         // Create a SecurityUser instance
         SecurityUser securityUser = new SecurityUser();
         securityUser.setUsername(user.getEmail()); // Use email as username
         securityUser.setLastPasswordReset(user.getLastPasswordReset());
         securityUser.setPassword(user.getPassword()); // Ensure to use hashed password
         securityUser.setAuthorities(Collections.emptyList()); // Set as needed
+*/
+
+        SecurityUser securityUser = new SecurityUser();
+        securityUser.setUsername(client.getEmail());
+        securityUser.setLastPasswordReset(client.getLastPasswordReset());
+        securityUser.setPassword(client.getPassword());
+        securityUser.setAuthorities(Collections.emptyList());
 
         // Generate a password reset token
         String resetToken = tokenUtils.generatePasswordResetToken(securityUser);
 
         // Send the reset token to the user
-        sendPasswordResetEmail(user.getEmail(), resetToken);
+        sendPasswordResetEmail(client.getEmail(), resetToken);
 
         // Optionally update the user entity to record the token and expiration
         // user.setResetToken(resetToken); // Ensure this field exists in your User entity
         // user.setTokenExpiration(calculateTokenExpiration()); // Implement this method to set expiration time
-        userRepo.save(user);
+        clientRepo.save(client);
     }
 
     // Helper method to calculate token expiration
@@ -226,15 +258,24 @@ public class AuthServiceImpl implements AuthService/*custom class*/ {
         String email = tokenUtils.getUsernameFromToken(resetToken);
 
         // Load the user from the repository
-        User user = userRepo.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+//        User user = userRepo.findByEmail(email)
+//                .orElseThrow(() -> new RuntimeException("User not found"));
+        Client client = clientRepo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Client not found"));
 
+/*
         // Create a SecurityUser instance for verification
         SecurityUser securityUser = new SecurityUser();
         securityUser.setUsername(email);
         securityUser.setLastPasswordReset(user.getLastPasswordReset());
         securityUser.setPassword(user.getPassword());
         securityUser.setAuthorities(Collections.emptyList()); // Set as needed
+*/
+        SecurityUser securityUser = new SecurityUser();
+        securityUser.setUsername(email);
+        securityUser.setLastPasswordReset(client.getLastPasswordReset());
+        securityUser.setPassword(client.getPassword());
+        securityUser.setAuthorities(Collections.emptyList());
 
         // Verify the reset token
         if (!tokenUtils.verifyPasswordResetToken(resetToken, securityUser)) {
@@ -244,15 +285,18 @@ public class AuthServiceImpl implements AuthService/*custom class*/ {
         // Encrypt the new password
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String hashedPassword = passwordEncoder.encode(newPassword);
-        user.setPassword(hashedPassword);
-        user.setLastPasswordReset(new Date());
+//        user.setPassword(hashedPassword);
+//        user.setLastPasswordReset(new Date());
+
+        client.setPassword(hashedPassword);
+        client.setLastPasswordReset(new Date());
 
         // Clear reset token and expiration
 //        user.setResetToken(null); // Ensure these fields exist in the User entity
 //        user.setTokenExpiration(null);
 
         // Save the updated user
-        userRepo.save(user);
+        clientRepo.save(client);
     }
 
 
