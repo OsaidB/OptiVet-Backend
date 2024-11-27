@@ -12,12 +12,10 @@ import java.time.LocalDateTime;
 import bzu.gradproj.optivet.backend.dto.auth.PasswordResetConfirmRequest;
 import bzu.gradproj.optivet.backend.dto.auth.RegisterRequest;
 
-//import bzu.gradproj.optivet.backend.model.entity.FunctionalRole;
-//import bzu.gradproj.optivet.backend.model.entity.User;
+import bzu.gradproj.optivet.backend.model.entity.User;
 import bzu.gradproj.optivet.backend.model.entity.Client;
 import bzu.gradproj.optivet.backend.model.security.SecurityUser;
-//import bzu.gradproj.optivet.backend.repository.UserRepo;
-//import bzu.gradproj.optivet.backend.repository.FuncRoleRepo;
+import bzu.gradproj.optivet.backend.repository.UserRepo;
 import bzu.gradproj.optivet.backend.repository.ClientRepo;
 
 import bzu.gradproj.optivet.backend.security.TokenUtils;
@@ -52,6 +50,9 @@ public class AuthServiceImpl implements AuthService/*custom class*/ {
 
     @Autowired
     private final ClientRepo clientRepo; // Updated to ClientRepo
+
+    @Autowired
+    private final UserRepo userRepo; // Updated to ClientRepo
 //    @Autowired
 //    private final FuncRoleRepo funcRoleRepo;
     /**
@@ -149,33 +150,72 @@ public class AuthServiceImpl implements AuthService/*custom class*/ {
         // Fetch the user from the repository
 //        User user = userRepo.findByEmail(email)
 //                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Check in UserRepo first
+        User user = userRepo.findByEmail(email).orElse(null);
+        if (user != null) {
+            sendPasswordResetEmailForUser(user);
+            return;
+        }
+
         Client client = clientRepo.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Client not found"));
-/*
+        sendPasswordResetEmailForClient(client);
+
+
+//        clientRepo.save(client);
+    }
+
+    private void sendPasswordResetEmailForUser(User user) {
+        /*
         // Create a SecurityUser instance
         SecurityUser securityUser = new SecurityUser();
         securityUser.setUsername(user.getEmail()); // Use email as username
         securityUser.setLastPasswordReset(user.getLastPasswordReset());
         securityUser.setPassword(user.getPassword()); // Ensure to use hashed password
         securityUser.setAuthorities(Collections.emptyList()); // Set as needed
-*/
+        */
 
-        SecurityUser securityUser = new SecurityUser();
-        securityUser.setUsername(client.getEmail());
-        securityUser.setLastPasswordReset(client.getLastPasswordReset());
-        securityUser.setPassword(client.getPassword());
-        securityUser.setAuthorities(Collections.emptyList());
-
+        SecurityUser securityUser = new SecurityUser(
+                user.getId(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getLastPasswordReset(),
+                Collections.emptyList()
+        );
         // Generate a password reset token
         String resetToken = tokenUtils.generatePasswordResetToken(securityUser);
+        // Send the reset token to the user
+        sendPasswordResetEmail(user.getEmail(), resetToken); // Username is the email
 
+        // Optionally update the user entity to record the token and expiration
+        // user.setResetToken(resetToken); // Ensure this field exists in your User entity
+        // user.setTokenExpiration(calculateTokenExpiration()); // Implement this method to set expiration time
+    }
+
+    private void sendPasswordResetEmailForClient(Client client) {
+
+//        SecurityUser securityUser = new SecurityUser();
+//        securityUser.setUsername(client.getEmail());
+//        securityUser.setLastPasswordReset(client.getLastPasswordReset());
+//        securityUser.setPassword(client.getPassword());
+//        securityUser.setAuthorities(Collections.emptyList());
+
+        SecurityUser securityUser = new SecurityUser(
+                client.getId(),
+                client.getEmail(),
+                client.getPassword(),
+                client.getLastPasswordReset(),
+                Collections.emptyList()
+        );
+        // Generate a password reset token
+        String resetToken = tokenUtils.generatePasswordResetToken(securityUser);
         // Send the reset token to the user
         sendPasswordResetEmail(client.getEmail(), resetToken);
 
         // Optionally update the user entity to record the token and expiration
         // user.setResetToken(resetToken); // Ensure this field exists in your User entity
         // user.setTokenExpiration(calculateTokenExpiration()); // Implement this method to set expiration time
-        clientRepo.save(client);
     }
 
     // Helper method to calculate token expiration
@@ -260,10 +300,23 @@ public class AuthServiceImpl implements AuthService/*custom class*/ {
         // Load the user from the repository
 //        User user = userRepo.findByEmail(email)
 //                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Check UserRepo first
+        User user = userRepo.findByEmail(email).orElse(null);
+        if (user != null) {
+            resetPasswordForUser(user, newPassword);
+            return;
+        }
+
+        // Fallback to ClientRepo
         Client client = clientRepo.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Client not found"));
+        resetPasswordForClient(client, newPassword);
 
-/*
+    }
+
+    private void resetPasswordForUser(User user, String newPassword) {
+        /*
         // Create a SecurityUser instance for verification
         SecurityUser securityUser = new SecurityUser();
         securityUser.setUsername(email);
@@ -271,22 +324,44 @@ public class AuthServiceImpl implements AuthService/*custom class*/ {
         securityUser.setPassword(user.getPassword());
         securityUser.setAuthorities(Collections.emptyList()); // Set as needed
 */
-        SecurityUser securityUser = new SecurityUser();
-        securityUser.setUsername(email);
-        securityUser.setLastPasswordReset(client.getLastPasswordReset());
-        securityUser.setPassword(client.getPassword());
-        securityUser.setAuthorities(Collections.emptyList());
 
+        /*
         // Verify the reset token
         if (!tokenUtils.verifyPasswordResetToken(resetToken, securityUser)) {
             throw new RuntimeException("Invalid or expired token");
         }
+        */
 
-        // Encrypt the new password
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String hashedPassword = passwordEncoder.encode(newPassword);
-//        user.setPassword(hashedPassword);
-//        user.setLastPasswordReset(new Date());
+
+        user.setPassword(hashedPassword);
+        user.setLastPasswordReset(new Date());
+
+        // Clear reset token and expiration
+//        user.setResetToken(null); // Ensure these fields exist in the User entity
+//        user.setTokenExpiration(null);
+
+        userRepo.save(user);
+    }
+
+    private void resetPasswordForClient(Client client, String newPassword) {
+
+//        SecurityUser securityUser = new SecurityUser();
+//        securityUser.setUsername(email);
+//        securityUser.setLastPasswordReset(client.getLastPasswordReset());
+//        securityUser.setPassword(client.getPassword());
+//        securityUser.setAuthorities(Collections.emptyList());
+
+                /*
+        // Verify the reset token
+        if (!tokenUtils.verifyPasswordResetToken(resetToken, securityUser)) {
+            throw new RuntimeException("Invalid or expired token");
+        }
+        */
+
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(newPassword);
 
         client.setPassword(hashedPassword);
         client.setLastPasswordReset(new Date());
@@ -295,9 +370,6 @@ public class AuthServiceImpl implements AuthService/*custom class*/ {
 //        user.setResetToken(null); // Ensure these fields exist in the User entity
 //        user.setTokenExpiration(null);
 
-        // Save the updated user
         clientRepo.save(client);
     }
-
-
 }

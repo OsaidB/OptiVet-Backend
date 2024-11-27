@@ -5,6 +5,7 @@ package bzu.gradproj.optivet.backend.model.factory;
 
 //import bzu.gradproj.optivet.backend.model.entity.User;
 import bzu.gradproj.optivet.backend.model.entity.Client;
+import bzu.gradproj.optivet.backend.model.entity.User;
 import bzu.gradproj.optivet.backend.model.security.SecurityUser;
 import org.springframework.security.core.authority.AuthorityUtils;
 
@@ -25,13 +26,22 @@ public class UserFactory {
 
                 client.getPassword(),
                 client.getLastPasswordReset(),
-                Collections.emptyList() // No roles or authorities
+                AuthorityUtils.createAuthorityList("ROLE_CLIENT") // Role for clients
 
 //                AuthorityUtils.commaSeparatedStringToAuthorityList(user2.getAuthorities())
                 //// Converts comma-separated authorities into a list of GrantedAuthority objects
         );
     }
 
+    public static SecurityUser create(User user) {
+        return new SecurityUser(
+                user.getId(),
+                user.getEmail(), // Email as username
+                user.getPassword(),
+                user.getLastPasswordReset(),
+                AuthorityUtils.createAuthorityList("ROLE_USER") // Role for users
+        );
+    }
 
 }
 

@@ -56,15 +56,16 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry
                                 //.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                                .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
+                                .dispatcherTypeMatchers(FORWARD, ERROR).permitAll() // Allow internal dispatcher requests
                                 .requestMatchers(//This part configures which endpoints are publicly accessible(without authentication):
                                         antMatcher("/**/api-docs/**"),
                                         antMatcher("/swagger-ui.html"),
                                         antMatcher("/swagger-ui/**"),
-                                        antMatcher("/auth/**")).permitAll() //https://marco.dev/spring-boot-h2-error
-                                .requestMatchers("/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/leader/**").hasRole("TEAM_LEADER")
-                                .requestMatchers("/developer/**").hasRole("DEVELOPER")
+                                        antMatcher("/auth/**")
+                                ).permitAll() // Swagger and authentication endpoints are public.
+
+                                .requestMatchers("/api/clients/**").hasRole("CLIENT") // Restrict client APIs to CLIENT role.
+                                .requestMatchers("/api/users/**").hasRole("USER") // Restrict user APIs to USER role.
                                 .anyRequest().authenticated())//All other endpoints require the user to be authenticated.
                 .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(this.unauthorizedHandler));
         //This configures a custom EntryPointUnauthorizedHandler to handle unauthorized access attempts,
@@ -102,3 +103,51 @@ Ensure that your User entity and UserDetailsServiceImpl are correctly setting up
 Consider adjusting the authorizeHttpRequests configuration to include role-based restrictions as needed.
 Verify that the AuthenticationTokenFilter is correctly extracting and validating roles from the JWT.
 */
+
+/*
+full chat response:
+
+@Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
+public class WebSecurityConfig {
+
+    private final EntryPointUnauthorizedHandler unauthorizedHandler;
+    private final AuthenticationConfiguration authConfig;
+    private final AuthenticationTokenFilter authenticationTokenFilter;
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager() throws Exception {
+        return authConfig.getAuthenticationManager();
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for stateless APIs
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless sessions
+                .authorizeHttpRequests(auth -> auth
+                        .dispatcherTypeMatchers(FORWARD, ERROR).permitAll() // Allow internal dispatcher requests
+                        .requestMatchers(
+                                antMatcher("/**api-docs/**"),
+ antMatcher("/swagger-ui.html"),
+ antMatcher("/swagger-ui/**"),
+ antMatcher("/auth/**") // Allow authentication endpoints
+ ).permitAll()
+ .requestMatchers("/api/clients/**").hasRole("CLIENT") // Restrict client APIs to CLIENT role
+ .requestMatchers("/api/users/**").hasRole("USER")   // Restrict user APIs to USER role
+ .anyRequest().authenticated() // Require authentication for all other endpoints
+ )
+ .exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler)) // Handle unauthorized access
+ .addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter
+ return http.build();
+ }
+ }
+
+
+ */
