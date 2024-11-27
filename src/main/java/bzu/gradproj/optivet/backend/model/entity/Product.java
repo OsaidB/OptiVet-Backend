@@ -17,27 +17,34 @@ import lombok.Setter;
 public class Product {
 
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", length = 100, nullable = false)
     private String name;
+
+
+    @Column(name = "productImageUrl", nullable = false)
+    private String productImageUrl;
+
+    @Column(name = "quantity")
+    private int quantity;
+
+
+    @Column(name = "price")
+    private double price;
 
 
     @Column(name = "productCategory", nullable = false)
     @Enumerated(EnumType.STRING)
     private ProductCategory productCategory;
 
-
-    @Column(name = "quantity")
-    private int quantity;
-
-
-
     public enum ProductCategory {
-        FOOD, TREATS, TOYS, COLLARS;
+        FOOD,
+        TREATS,
+        TOYS,
+        COLLARS
     }
 }
