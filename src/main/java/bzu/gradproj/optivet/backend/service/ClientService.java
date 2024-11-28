@@ -13,4 +13,6 @@ public interface ClientService {
 
     // New method to retrieve a client's pets
     List<PetDTO> getClientPets(Long clientId);
+    ClientDTO getClientByEmail(String email);
+
 }

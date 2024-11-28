@@ -79,4 +79,11 @@ public class ClientServiceImpl implements ClientService {
                 .map(petMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public ClientDTO getClientByEmail(String email) {
+        Client client = clientRepo.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Client not found with email: " + email));
+        return clientMapper.toDTO(client);
+    }
 }

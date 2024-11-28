@@ -58,4 +58,9 @@ public class ClientController {
         return ResponseEntity.ok(pets);
     }
 
+    @GetMapping("/email/{email}")
+    public ResponseEntity<ClientDTO> getClientByEmail(@PathVariable("email") String email) {
+        ClientDTO clientDTO = clientService.getClientByEmail(email);
+        return ResponseEntity.ok(clientDTO);
+    }
 }

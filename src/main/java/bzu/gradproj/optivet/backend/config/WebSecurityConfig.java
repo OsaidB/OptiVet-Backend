@@ -15,6 +15,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.Arrays;
+
 import static jakarta.servlet.DispatcherType.ERROR;
 import static jakarta.servlet.DispatcherType.FORWARD;
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
@@ -45,45 +51,56 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
-                //CSRF protection is disabled,
-                // which is typical for APIs where tokens (like JWT) are used for security.
-                .sessionManagement(httpSecuritySessionManagementConfigurer ->
-                        httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                //The application is stateless,
-                // meaning no session is created or used.
-                // This is common in token-based authentication systems like JWT.
-                .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
-                        authorizationManagerRequestMatcherRegistry
-                                //.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                                .dispatcherTypeMatchers(FORWARD, ERROR).permitAll() // Allow internal dispatcher requests
-                                .requestMatchers(//This part configures which endpoints are publicly accessible(without authentication):
-                                        antMatcher("/**/api-docs/**"),
-                                        antMatcher("/swagger-ui.html"),
-                                        antMatcher("/swagger-ui/**"),
-                                        antMatcher("/auth/**")
-                                ).permitAll() // Swagger and authentication endpoints are public.
+                .cors() // Enable CORS
+                .and()
+                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for stateless APIs
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless sessions
+                .authorizeHttpRequests(auth -> auth
+                        .dispatcherTypeMatchers(FORWARD, ERROR).permitAll() // Allow internal dispatcher requests
+                        .requestMatchers(
+                                antMatcher("/**/api-docs/**"),
+                                antMatcher("/swagger-ui.html"),
+                                antMatcher("/swagger-ui/**"),
+                                antMatcher("/auth/**") // Allow authentication endpoints
+                        ).permitAll()
+                        .requestMatchers("/api/clients/**").hasRole("CLIENT") // Restrict client APIs to CLIENT role
+                        .requestMatchers("/api/users/**").hasRole("USER")   // Restrict user APIs to USER role
+                        .anyRequest().authenticated() // Require authentication for all other endpoints
+                )
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler)) // Handle unauthorized access
+                .addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter
 
-                                .requestMatchers("/api/clients/**").hasRole("CLIENT") // Restrict client APIs to CLIENT role.
-                                .requestMatchers("/api/users/**").hasRole("USER") // Restrict user APIs to USER role.
-                                .anyRequest().authenticated())//All other endpoints require the user to be authenticated.
-                .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(this.unauthorizedHandler));
-        //This configures a custom EntryPointUnauthorizedHandler to handle unauthorized access attempts,
-        //any request that fails authentication
-        // will result in this handler being invoked,
-        // and the client will receive a 401 Unauthorized response.
-
-        // Custom JWT based authentication:
-        //This line adds a custom filter (AuthenticationTokenFilter) before the UsernamePasswordAuthenticationFilter.
-        // This filter will intercept requests and check for a valid JWT token in the header,
-        // authenticating the user if the token is valid.
-        http.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
-        //Given the functionality of the AuthenticationTokenFilter class,
-        // you've already integrated it correctly in the WebSecurityConfiguration by adding it before the UsernamePasswordAuthenticationFilter.
-        // This setup ensures that every request passes through this filter, enabling token-based authentication.
         return http.build();
-
     }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOriginPattern("*"); // Allow all origins dynamically
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "X-Auth-Token", "Content-Type"));
+        configuration.setAllowCredentials(true); // Allow credentials
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+
+
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.addAllowedOriginPattern("*"); // Allow all origins dynamically
+//        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+//        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+//        configuration.setAllowCredentials(true); // Allow credentials
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
+
 }
 /*
 3. What's Missing for Role-Based Access Control?
