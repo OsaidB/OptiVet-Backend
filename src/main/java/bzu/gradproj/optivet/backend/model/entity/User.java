@@ -95,6 +95,6 @@ public class User implements Serializable {
 
     // Enum to define the different types of roles within the clinic
     public enum UserRole {
-        CLIENT, VET_ASSISTANT, SECRETARY, MANAGER
+        CLIENT, VET_ASSISTANT, SECRETARY, MANAGER, VET
     }
 }

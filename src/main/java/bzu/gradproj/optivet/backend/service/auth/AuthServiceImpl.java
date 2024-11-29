@@ -1,16 +1,11 @@
 package bzu.gradproj.optivet.backend.service.auth;
 
-import bzu.gradproj.optivet.backend.dto.auth.AuthRequest;
-import bzu.gradproj.optivet.backend.dto.auth.AuthResponse;
-import bzu.gradproj.optivet.backend.dto.auth.PasswordResetRequest;
+import bzu.gradproj.optivet.backend.dto.auth.*;
 
 import javax.mail.*;
 import javax.mail.internet.*;
 import java.util.Properties;
 import java.time.LocalDateTime;
-
-import bzu.gradproj.optivet.backend.dto.auth.PasswordResetConfirmRequest;
-import bzu.gradproj.optivet.backend.dto.auth.RegisterRequest;
 
 import bzu.gradproj.optivet.backend.model.entity.User;
 import bzu.gradproj.optivet.backend.model.entity.Client;
@@ -372,4 +367,25 @@ public class AuthServiceImpl implements AuthService/*custom class*/ {
 
         clientRepo.save(client);
     }
+    @Override
+    public User registerEmployee(RegisterEmployeeRequest registerEmployeeRequest) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(registerEmployeeRequest.getPassword());
+
+        // Build a new User instance with the provided details
+        User newUser = new User();
+        newUser.setEmail(registerEmployeeRequest.getEmail());
+        newUser.setPassword(hashedPassword);
+        newUser.setFirstName(registerEmployeeRequest.getFirstName());
+        newUser.setLastName(registerEmployeeRequest.getLastName());
+        newUser.setPhoneNumber(registerEmployeeRequest.getPhoneNumber());
+        newUser.setDateOfBirth(registerEmployeeRequest.getDateOfBirth());
+        newUser.setRole(registerEmployeeRequest.getRole()); // Set role based on the request
+        newUser.setCreatedAt(LocalDateTime.now());
+        newUser.setUpdatedAt(LocalDateTime.now());
+
+        // Save the new employee to the database
+        return userRepo.save(newUser);
+    }
+
 }

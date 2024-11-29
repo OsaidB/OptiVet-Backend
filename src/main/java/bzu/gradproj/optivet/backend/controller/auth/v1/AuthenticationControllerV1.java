@@ -39,6 +39,13 @@ public class AuthenticationControllerV1 extends BaseController {
     Client createdUser= this.authenticationService.registerUser(registerRequest);
     return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
   }
+
+  @PostMapping("/register-employee")
+  public ResponseEntity<User> registerEmployee(@RequestBody @Valid RegisterEmployeeRequest registerEmployeeRequest) {
+    User createdEmployee = this.authenticationService.registerEmployee(registerEmployeeRequest);
+    return new ResponseEntity<>(createdEmployee, HttpStatus.CREATED);
+  }
+
   @PostMapping("/password-reset")
   public ResponseEntity<Void> requestPasswordReset(@RequestBody @Valid PasswordResetRequest passwordResetRequest) {
     authenticationService.requestPasswordReset(passwordResetRequest);
