@@ -56,4 +56,11 @@ public class UserController {
         userService.deleteUser(userId);
         return ResponseEntity.ok("User Deleted Successfully");
     }
+
+    // New endpoint to get user by email
+    @GetMapping("email/{email}")
+    public ResponseEntity<UserDTO> getUserByEmail(@PathVariable("email") String email) {
+        UserDTO userDto = userService.getUserByEmail(email);
+        return ResponseEntity.ok(userDto);
+    }
 }
