@@ -33,4 +33,8 @@ public class Appointment {
     private LocalDateTime appointmentDate;
 
     private String status = "AVAILABLE";  // Default status
+
+    ///////////////////////////////////
+    @Column(nullable = false)
+    private Integer duration;  // Duration in minutes
 }

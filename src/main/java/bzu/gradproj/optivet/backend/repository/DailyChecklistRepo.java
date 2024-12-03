@@ -11,6 +11,6 @@ import java.util.List;
 public interface DailyChecklistRepo extends JpaRepository<DailyChecklist, Long> {
 
     List<DailyChecklist> findByPetId(Long petId);
-
     List<DailyChecklist> findByDate(LocalDate date);
+    List<DailyChecklist> findByCriticalIssueFlagTrue();
 }

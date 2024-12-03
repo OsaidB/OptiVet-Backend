@@ -53,4 +53,11 @@ public class DailyChecklistController {
         dailyChecklistService.deleteDailyChecklist(id);
         return ResponseEntity.noContent().build();
     }
+
+    // Add this endpoint to fetch checklists with critical issues
+    @GetMapping("/critical")
+    public ResponseEntity<List<DailyChecklistDTO>> getDailyChecklistsWithCriticalIssues() {
+        List<DailyChecklistDTO> criticalChecklists = dailyChecklistService.getDailyChecklistsWithCriticalIssues();
+        return ResponseEntity.ok(criticalChecklists);
+    }
 }

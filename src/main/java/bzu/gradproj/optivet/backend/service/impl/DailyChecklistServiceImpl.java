@@ -75,4 +75,12 @@ public class DailyChecklistServiceImpl implements DailyChecklistService {
                 .map(dailyChecklistMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<DailyChecklistDTO> getDailyChecklistsWithCriticalIssues() {
+        List<DailyChecklist> criticalChecklists = dailyChecklistRepo.findByCriticalIssueFlagTrue();
+        return criticalChecklists.stream()
+                .map(dailyChecklistMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 }

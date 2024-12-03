@@ -15,14 +15,19 @@ public interface AppointmentMapper {
     @Mappings({
             @Mapping(source = "client.id", target = "clientId"),
             @Mapping(source = "pet.id", target = "petId"),
-            @Mapping(source = "vet.id", target = "vetId") // Mapping vet entity to vetId
+            @Mapping(source = "vet.id", target = "vetId"), // Mapping vet entity to vetId
+            ///////////////////////////////
+            @Mapping(source = "duration", target = "duration") // Map duration field
+
     })
     AppointmentDTO toDTO(Appointment appointment);
 
     @Mappings({
             @Mapping(source = "clientId", target = "client.id"),
             @Mapping(source = "petId", target = "pet.id"),
-            @Mapping(source = "vetId", target = "vet.id") // Mapping vetId to vet entity
+            @Mapping(source = "vetId", target = "vet.id"), // Mapping vetId to vet entity
+            //////////////////////////////////////
+            @Mapping(source = "duration", target = "duration") // Map duration field
     })
     Appointment toEntity(AppointmentDTO appointmentDTO);
 }

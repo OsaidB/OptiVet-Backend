@@ -23,4 +23,10 @@ public interface AppointmentService {
     @Transactional(readOnly = true)
     List<AppointmentDTO> getAppointmentsByVetIdAndStatus(Long vetId, String status);
 
+    @Transactional(readOnly = true)
+    List<AppointmentDTO> findScheduledAppointmentsByClientId(Long clientId);
+
+    @Transactional(readOnly = true)
+    List<AppointmentDTO> getAppointmentsByVetId(Long vetId);
+
 }

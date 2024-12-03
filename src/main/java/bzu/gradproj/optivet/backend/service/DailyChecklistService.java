@@ -20,4 +20,6 @@ public interface DailyChecklistService {
     List<DailyChecklistDTO> getAllDailyChecklists(); // Add this method to the interface
 
     void deleteDailyChecklist(Long id);
+
+    List<DailyChecklistDTO> getDailyChecklistsWithCriticalIssues();
 }

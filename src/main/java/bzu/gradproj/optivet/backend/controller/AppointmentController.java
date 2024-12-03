@@ -63,4 +63,18 @@ public class AppointmentController {
         return appointmentService.getAppointmentsByVetIdAndStatus(vetId, status);
     }
 
+    @GetMapping("/client/{clientId}/scheduled")
+    public ResponseEntity<List<AppointmentDTO>> getScheduledAppointmentsByClientId(@PathVariable Long clientId) {
+        List<AppointmentDTO> scheduledAppointments = appointmentService.findScheduledAppointmentsByClientId(clientId);
+        return ResponseEntity.ok(scheduledAppointments);
+    }
+
+    @GetMapping("/vet/{vetId}")
+    public ResponseEntity<List<AppointmentDTO>> getAppointmentsByVetId(@PathVariable Long vetId) {
+        List<AppointmentDTO> vetAppointments = appointmentService.getAppointmentsByVetId(vetId);
+        return ResponseEntity.ok(vetAppointments);
+    }
+
+
+
 }
