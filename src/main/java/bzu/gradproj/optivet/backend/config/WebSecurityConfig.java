@@ -61,7 +61,9 @@ public class WebSecurityConfig {
                                 antMatcher("/**/api-docs/**"),
                                 antMatcher("/swagger-ui.html"),
                                 antMatcher("/swagger-ui/**"),
-                                antMatcher("/auth/**") // Allow authentication endpoints
+                                antMatcher("/auth/**"), // Allow authentication endpoints
+                                antMatcher("/api/pets/uploads/**") // Allow access to serveImage endpoint
+
                         ).permitAll()
                         .requestMatchers("/api/clients/**").hasRole("CLIENT") // Restrict client APIs to CLIENT role
                         .requestMatchers("/api/users/**").hasRole("USER")   // Restrict user APIs to USER role
