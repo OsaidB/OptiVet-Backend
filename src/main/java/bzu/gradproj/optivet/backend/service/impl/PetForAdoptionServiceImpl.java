@@ -39,9 +39,17 @@ public class PetForAdoptionServiceImpl implements PetForAdoptionService {
 
         PetForAdoption existingPetForAdoption= petForAdoptionRepo.findById(petForAdoptionId).orElseThrow(() -> new EntityNotFoundException("Pet not found"));
 
+        //petForAdoptionMapper.toEntity(petForAdoptionDTO);
 
-        petForAdoptionRepo.save(existingPetForAdoption);
-        return petForAdoptionMapper.toDTO(existingPetForAdoption);
+        existingPetForAdoption.setName(petForAdoptionDTO.getName());
+        existingPetForAdoption.setType(petForAdoptionDTO.getType());
+        existingPetForAdoption.setBreed(petForAdoptionDTO.getBreed());
+        existingPetForAdoption.setBirthDate(petForAdoptionDTO.getBirthDate());
+        existingPetForAdoption.setPetForAdoptionDescription(petForAdoptionDTO.getPetForAdoptionDescription());
+        existingPetForAdoption.setPetForAdoptionImageUrl(petForAdoptionDTO.getPetForAdoptionImageUrl());
+
+        PetForAdoption updatedPetForAdoption = petForAdoptionRepo.save(existingPetForAdoption);
+        return petForAdoptionMapper.toDTO(updatedPetForAdoption);
 
 
     }

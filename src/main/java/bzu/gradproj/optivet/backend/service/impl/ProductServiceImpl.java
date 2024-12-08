@@ -38,9 +38,16 @@ public class ProductServiceImpl implements ProductService {
         Product existingProduct = productRepo.findById(productId).orElseThrow(() -> new EntityNotFoundException("Product not found"));
 
 
-        productRepo.save(existingProduct);
-        return productMapper.toDTO(existingProduct);
+        existingProduct.setName(productDTO.getName());
+        existingProduct.setProductCategory(productDTO.getProductCategory());
+        existingProduct.setPrice(productDTO.getPrice());
+        existingProduct.setProductImageUrl(productDTO.getProductImageUrl());
 
+        Product updatedProduct = productRepo.save(existingProduct);
+        return productMapper.toDTO(updatedProduct);
+
+//        productRepo.save(existingProduct);
+//        return productMapper.toDTO(existingProduct);
 
     }
 
@@ -52,8 +59,6 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products = productRepo.findAll();
         return productMapper.toDTOList(products);
     }
-
-
 
 
     @Override
