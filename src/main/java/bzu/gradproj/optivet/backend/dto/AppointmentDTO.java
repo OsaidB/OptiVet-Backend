@@ -30,4 +30,10 @@ public class AppointmentDTO {
 
     @NotNull(message = "Vet ID cannot be null")
     private Long vetId;  // Must have a vet associated
+
+
+    ///////////////////////////
+    @NotNull(message = "Duration cannot be null")
+    private Integer duration; // Duration in minutes
+
 }

@@ -58,6 +58,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.setClient(client);
         appointment.setVet(vet); // Assign the vet to the appointment
 
+        appointment.setDuration(appointmentDTO.getDuration()); // Set the duration
         appointmentRepository.save(appointment);
         return appointmentMapper.toDTO(appointment);
     }
@@ -122,6 +123,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         // Update appointment date and status
         appointment.setAppointmentDate(appointmentDTO.getAppointmentDate());
         appointment.setStatus(appointmentDTO.getStatus());
+        appointment.setDuration(appointmentDTO.getDuration()); // Update the duration
+
 
         // Save the updated appointment and return the DTO
         appointmentRepository.save(appointment);
@@ -192,6 +195,29 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Transactional(readOnly = true)
     public List<AppointmentDTO> getAppointmentsByVetIdAndStatus(Long vetId, String status) {
         List<Appointment> appointments = appointmentRepository.findByVetIdAndStatus(vetId, status);
+        return appointments.stream()
+                .map(appointmentMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<AppointmentDTO> findScheduledAppointmentsByClientId(Long clientId) {
+        // Fetch appointments with the status "SCHEDULED" for the given clientId
+        List<Appointment> scheduledAppointments = appointmentRepository.findByClientIdAndStatus(clientId, "SCHEDULED");
+
+        // Convert to DTOs and return the result
+        return scheduledAppointments.stream()
+                .map(appointmentMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+    @Override
+    @Transactional(readOnly = true)
+    public List<AppointmentDTO> getAppointmentsByVetId(Long vetId) {
+        // Fetch appointments for the given vetId
+        List<Appointment> appointments = appointmentRepository.findByVetId(vetId);
+
+        // Convert to DTOs and return the result
         return appointments.stream()
                 .map(appointmentMapper::toDTO)
                 .collect(Collectors.toList());
