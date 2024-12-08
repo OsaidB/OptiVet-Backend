@@ -65,8 +65,8 @@ public class WebSecurityConfig {
                                 antMatcher("/api/pets/uploads/**") // Allow access to serveImage endpoint
 
                         ).permitAll()
-//                        .requestMatchers("/api/clients/**").hasRole("CLIENT") // Restrict client APIs to CLIENT role
-//                        .requestMatchers("/api/users/**").hasRole("USER")   // Restrict user APIs to USER role
+                        .requestMatchers("/api/clients/**").hasRole("CLIENT") // Restrict client APIs to CLIENT role
+                        .requestMatchers("/api/users/**").hasRole("USER")   // Restrict user APIs to USER role
 //                        .requestMatchers("/api/users/roles/{role}").hasRole("CLIENT")   // Restrict user APIs to USER role
                         .anyRequest().authenticated() // Require authentication for all other endpoints
                 )
