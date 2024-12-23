@@ -66,8 +66,10 @@ public class WebSecurityConfig {
 
                         ).permitAll()
                         .requestMatchers("/api/users/roles/**").hasRole("CLIENT") // Restrict access to CLIENT role
-                        .requestMatchers("/api/clients/**").hasRole("USER") // Allow USER role to access getClientById
-                        .requestMatchers("/api/clients/**").hasRole("CLIENT") // Restrict client APIs to CLIENT role
+
+                        // Allow both USER and CLIENT roles to access /api/clients/**
+                        .requestMatchers("/api/clients/**").hasAnyRole("USER", "CLIENT")
+
                         .requestMatchers("/api/users/**").hasRole("USER")   // Restrict user APIs to USER role
 //                        .requestMatchers("/api/users/roles/{role}").hasRole("CLIENT")   // Restrict user APIs to USER role
                         .anyRequest().authenticated() // Require authentication for all other endpoints
