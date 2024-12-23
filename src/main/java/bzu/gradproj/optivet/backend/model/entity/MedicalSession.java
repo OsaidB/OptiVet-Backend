@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -63,8 +64,10 @@ public class MedicalSession {
     @Column(length = 1000)
     private String testsOrdered;
 
-    @Column(name = "test_results_image_url")
-    private String testResultsImageUrl; // Store image URL for test results
+    @ElementCollection
+    @CollectionTable(name = "test_results_images", joinColumns = @JoinColumn(name = "medical_session_id"))
+    @Column(name = "image_url")
+    private List<String> testResultsImageUrls; // Updated to store multiple image URLs
 
     // Follow-up Actions
     private LocalDate nextAppointmentDate;

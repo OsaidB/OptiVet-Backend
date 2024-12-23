@@ -5,8 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -46,7 +48,7 @@ public class MedicalSessionDTO {
 
     // Lab Testing
     private String testsOrdered;
-    private String testResultsImageUrl;
+    private List<String> testResultsImageUrls; // Updated to handle multiple image URLs
 
     // Follow-up Actions
     private LocalDate nextAppointmentDate;
