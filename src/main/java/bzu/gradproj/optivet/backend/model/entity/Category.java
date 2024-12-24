@@ -13,8 +13,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "products")
-public class Product {
+@Table(name = "categories")
+public class Category {
 
 
     @Id
@@ -26,19 +26,10 @@ public class Product {
     private String name;
 
 
-    @Column(name = "productImageUrl", nullable = false)
-    private String productImageUrl;
-
-    @Column(name = "quantity")
-    private int quantity;
+    @Column(name = "categoryImageUrl", nullable = true)
+    private String categoryImageUrl;
 
 
-    @Column(name = "price")
-    private double price;
-
-
-    @Column(name = "productCategory", nullable = false)
-    private String productCategory;
 
 
 }

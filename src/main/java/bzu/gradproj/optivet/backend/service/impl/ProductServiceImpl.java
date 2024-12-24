@@ -54,6 +54,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
+
+
+    @Override
+    public ProductDTO getProductById(Long id) {
+
+        Product existingProduct = productRepo.findById(id).get();
+        return productMapper.toDTO(existingProduct);
+
+    }
+
     @Override
 
     public void deleteProduct(Long productId) {

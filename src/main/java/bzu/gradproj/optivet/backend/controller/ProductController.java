@@ -130,35 +130,118 @@ public class ProductController {
 
 
 
-
     @GetMapping("/uploads/{fileName}")
     public ResponseEntity<Resource> serveImage(@PathVariable String fileName) {
-        //List<Resource> serveImageUrls = new ArrayList<>();
         try {
+            // Define the path to the file in the upload directory
+            Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
 
-                // Define the path to the file in the upload directory
-                Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName).normalize();
-                Resource resource = new UrlResource(filePath.toUri());
+            if (!resource.exists()) {
+                return ResponseEntity.notFound().build();
+            }
 
-                if (!resource.exists()) {
-                    return ResponseEntity.notFound().build();
-                }
-
-                // Determine the content type of the image
-
-
-                //serveImageUrls.add(contentType);
-
-
+            // Determine the content type of the image
             String contentType = "image/jpeg"; // Adjust based on the image type, if necessary
+
             return ResponseEntity.ok()
                     .contentType(MediaType.parseMediaType(contentType))
                     .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
                     .body(resource);
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+
+
+
+
+//    @GetMapping("/uploads/{fileName}")
+//    public ResponseEntity<Resource> serveImage(@PathVariable String fileName) {
+//        try {
+//            // Define the path to the file in the upload directory
+//            Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName).normalize();
+//            Resource resource = new UrlResource(filePath.toUri());
+//
+//            if (!resource.exists()) {
+//                return ResponseEntity.notFound().build();
+//            }
+//
+//            // Determine the content type of the image
+//            String contentType = "image/jpeg"; // Adjust based on the image type, if necessary
+//
+//            return ResponseEntity.ok()
+//                    .contentType(MediaType.parseMediaType(contentType))
+//                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+//                    .body(resource);
+//
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
+
+
+
+
+
+
+
+//    @GetMapping("/uploads/{fileName}")
+//    public ResponseEntity<Resource> serveImage(@PathVariable String fileName) {
+//        try {
+//            // Define the path to the file in the upload directory
+//            Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName).normalize();
+//            Resource resource = new UrlResource(filePath.toUri());
+//
+//            if (!resource.exists()) {
+//                return ResponseEntity.notFound().build();
+//            }
+//
+//            // Determine the content type of the image
+//            String contentType = "image/jpeg"; // Adjust based on the image type, if necessary
+//
+//            return ResponseEntity.ok()
+//                    .contentType(MediaType.parseMediaType(contentType))
+//                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+//                    .body(resource);
+//
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
+
+
+
+//    @GetMapping("/uploads/{fileName}")
+//    public ResponseEntity<Resource> serveImage(@PathVariable String fileName) {
+//        //List<Resource> serveImageUrls = new ArrayList<>();
+//        try {
+//
+//                // Define the path to the file in the upload directory
+//                Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName).normalize();
+//                Resource resource = new UrlResource(filePath.toUri());
+//
+//                if (!resource.exists()) {
+//                    return ResponseEntity.notFound().build();
+//                }
+//
+//                // Determine the content type of the image
+//
+//
+//                //serveImageUrls.add(contentType);
+//
+//
+//            String contentType = "image/jpeg"; // Adjust based on the image type, if necessary
+//            return ResponseEntity.ok()
+//                    .contentType(MediaType.parseMediaType(contentType))
+//                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+//                    .body(resource);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
 
 
 
@@ -234,6 +317,18 @@ public class ProductController {
         List<ProductDTO> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
     }
+
+
+
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
+        ProductDTO product = productService.getProductById(id);
+        return ResponseEntity.ok(product);
+    }
+
+
 
 
     @DeleteMapping("/{productId}")
