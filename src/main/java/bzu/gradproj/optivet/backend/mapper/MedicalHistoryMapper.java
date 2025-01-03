@@ -15,7 +15,7 @@ public interface MedicalHistoryMapper {
     PetMapper INSTANCE = Mappers.getMapper(PetMapper.class);
 
     @Mappings({
-            @Mapping(source = "pet.id", target = "id"),
+            @Mapping(source = "medicalHistoryImageUrls", target = "medicalHistoryImageUrls")
 //            @Mapping(source = "surgeons", target = "surgeons")
 
     })
@@ -24,7 +24,7 @@ public interface MedicalHistoryMapper {
 
     @Mappings({
 
-            @Mapping(source = "id", target = "pet.id"),
+            @Mapping(source = "medicalHistoryImageUrls", target = "medicalHistoryImageUrls")
 //            @Mapping(source = "surgeons", target = "surgeons")
     })
     MedicalHistory toEntity(MedicalHistoryDTO medicalHistoryDTO);

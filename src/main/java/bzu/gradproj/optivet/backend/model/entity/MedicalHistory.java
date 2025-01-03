@@ -30,9 +30,16 @@ public class MedicalHistory {
     @Column(name = "notes", nullable = true)
     private String notes;
 
+
+    @ElementCollection
+    @CollectionTable(name = "medical_history_images", joinColumns = @JoinColumn(name = "medical_history_id"))
+    @Column(name = "url")
+    private List<String> medicalHistoryImageUrls;
+
     //mappedBy
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Pet pet;
+
+//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private Pet pet;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "medical_history_id", referencedColumnName = "id")

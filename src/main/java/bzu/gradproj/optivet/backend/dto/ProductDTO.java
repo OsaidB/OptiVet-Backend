@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,7 +25,6 @@ public class ProductDTO {
     @NotNull(message = "Product url cannot be null")
     private String productImageUrl;
 
-    private int quantity;
 
     private double price;
 
@@ -32,7 +33,7 @@ public class ProductDTO {
     private String productCategory;
 
 
-    //   @NotNull(message = "Medical_history ID cannot be null")
+    //private List<String> medicalHistoryImages;
 
 
 }

@@ -74,7 +74,7 @@ public class MedicalHistoryServiceImpl implements MedicalHistoryService {
         MedicalHistory existingMedicalHistory = medicalHistoryRepo.findById(existingPet.getMedicalHistoryy().getId()).orElseThrow(() -> new EntityNotFoundException("Medical history not found"));
         existingMedicalHistory.setNotes(medicalHistoryDTO.getNotes());
         existingMedicalHistory.setDietaryPreferences(medicalHistoryDTO.getDietaryPreferences());
-
+        existingMedicalHistory.setMedicalHistoryImageUrls(medicalHistoryDTO.getMedicalHistoryImageUrls());
 
         medicalHistoryRepo.save(existingMedicalHistory);
         return medicalHistoryMapper.toDTO(existingMedicalHistory);

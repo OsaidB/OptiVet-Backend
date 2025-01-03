@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 
 @Getter
 @Setter
@@ -29,8 +31,7 @@ public class Product {
     @Column(name = "productImageUrl", nullable = false)
     private String productImageUrl;
 
-    @Column(name = "quantity")
-    private int quantity;
+
 
 
     @Column(name = "price")
@@ -39,6 +40,4 @@ public class Product {
 
     @Column(name = "productCategory", nullable = false)
     private String productCategory;
-
-
 }
