@@ -7,16 +7,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "products")
-public class Product {
+@Table(name = "categories")
+public class Category {
 
 
     @Id
@@ -28,16 +26,10 @@ public class Product {
     private String name;
 
 
-    @Column(name = "productImageUrl", nullable = false)
-    private String productImageUrl;
+    @Column(name = "categoryImageUrl", nullable = true)
+    private String categoryImageUrl;
 
 
 
 
-    @Column(name = "price")
-    private double price;
-
-
-    @Column(name = "productCategory", nullable = false)
-    private String productCategory;
 }

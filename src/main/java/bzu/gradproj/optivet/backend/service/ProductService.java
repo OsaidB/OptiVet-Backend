@@ -1,5 +1,6 @@
 package bzu.gradproj.optivet.backend.service;
 
+import bzu.gradproj.optivet.backend.dto.CategoryDTO;
 import bzu.gradproj.optivet.backend.dto.ProductDTO;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public interface ProductService {
 
     List<ProductDTO> getAllProducts();
 
+    ProductDTO getProductById(Long id);
 
-    void deleteProduct(Long productId);
+    void deleteProduct(Long id);
 }

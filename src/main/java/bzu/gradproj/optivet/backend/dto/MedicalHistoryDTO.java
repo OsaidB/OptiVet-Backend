@@ -18,10 +18,12 @@ public class MedicalHistoryDTO {
     private String dietaryPreferences;
 
     private String notes;
-
+    private List<String> medicalHistoryImageUrls;
+    private String petId;
     private List<AllergiesDTO> allergies;
     private List<ChronicConditionsDTO> chronicConditions;
     private List<SurgeoriesDTO> surgeories;
     private List<VaccinationsDTO> vaccinations;
+
 
 }

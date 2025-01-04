@@ -18,12 +18,16 @@ public interface ProductMapper {
 //    @Mapping(source = "productCategory", target = "productCategory")
 @Mapping(source = "productCategory", target = "productCategory")
 @Mapping(source = "id", target = "id")
+
+
     ProductDTO toDTO(Product product);
 
 
 //    @Mapping(source = "productCategory", target = "productCategory")
 @Mapping(source = "productCategory", target = "productCategory")
 @Mapping(source = "id", target = "id")
+
+
     Product toEntity(ProductDTO productDTO);
 
 
