@@ -1,5 +1,5 @@
 # First stage: Build the application
-FROM maven:3.8-openjdk-21 AS build
+FROM maven:3.9-openjdk-19 AS build
 LABEL authors="OAB2K"
 
 # Set the working directory
@@ -9,17 +9,17 @@ WORKDIR /app
 COPY pom.xml mvnw mvnw.cmd ./
 COPY .mvn .mvn
 
-# Download Maven dependencies (this step caches dependencies for faster builds)
-RUN ./mvnw dependency:go-offline
+# Download Maven dependencies
+RUN ./mvnw dependency:go-offline -B
 
-# Copy the rest of the application source code
+# Copy the application source code
 COPY src ./src
 
 # Build the Spring Boot application
 RUN ./mvnw package -DskipTests
 
 # Second stage: Run the application
-FROM openjdk:21-jdk-slim
+FROM openjdk:19-jdk-slim
 LABEL authors="OAB2K"
 
 # Set the working directory
