@@ -1,33 +1,77 @@
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+# Ignore target and build directories
+/target/
+/build/
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# Exclude logs and temp files
+*.log
+*.tmp
+*.temp
 
-### IntelliJ IDEA ###
-.idea
+# Exclude compiled Java files
+*.class
+
+# Exclude IntelliJ IDEA project files
+.idea/
 *.iws
 *.iml
 *.ipr
 
-### NetBeans ###
+# Exclude VS Code workspace settings
+.vscode/
+
+# Exclude Eclipse/STS project files
+.classpath
+.project
+.settings/
+.springBeans/
+.sts4-cache/
+.apt_generated
+.factorypath
+
+# Exclude NetBeans project files
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
+
+# Exclude Gradle-specific files
+.gradle/
+/out/
+!gradlew
+!gradlew.bat
+!gradle/wrapper/gradle-wrapper.properties
+!gradle/wrapper/gradle-wrapper.jar
+
+# Exclude Maven wrapper files
+.mvn/
+!**/.mvn/wrapper/maven-wrapper.jar
+
+# Exclude dependency or system-specific files
+*.war
+*.jar
+*.ear
+.DS_Store
+Thumbs.db
+
+# Exclude test and coverage files
+/test-output/
+/coverage/
+
+# Exclude sensitive configuration files
+application.yml
+application.properties
+.env
+*.key
+*.pem
+
+# Exclude backup files
+*.bak
+*.swp
+*~
+
+# Include specific folders and files from ignored directories (if needed)
+!**/src/main/**/target/
+!**/src/test/**/target/
 !**/src/main/**/build/
 !**/src/test/**/build/
-
-### VS Code ###
-.vscode/
