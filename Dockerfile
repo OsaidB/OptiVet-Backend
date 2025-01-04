@@ -1,25 +1,22 @@
 # First stage: Build the application
-FROM ubuntu:latest AS build
+FROM maven:3.8-openjdk-21 AS build
 LABEL authors="OAB2K"
-
-# Install necessary dependencies and Java
-RUN apt-get update && apt-get install -y \
-    openjdk-21-jdk \
-    curl \
-    unzip \
-    && apt-get clean
 
 # Set the working directory
 WORKDIR /app
 
-# Copy the application source code into the container
-COPY . .
+# Copy the Maven wrapper files and the pom.xml
+COPY pom.xml mvnw mvnw.cmd ./
+COPY .mvn .mvn
 
-# Grant execution permissions to the Gradle wrapper
-RUN chmod +x ./gradlew
+# Download Maven dependencies (this step caches dependencies for faster builds)
+RUN ./mvnw dependency:go-offline
+
+# Copy the rest of the application source code
+COPY src ./src
 
 # Build the Spring Boot application
-RUN ./gradlew bootJar --no-daemon
+RUN ./mvnw package -DskipTests
 
 # Second stage: Run the application
 FROM openjdk:21-jdk-slim
@@ -32,7 +29,7 @@ WORKDIR /app
 EXPOSE 8080
 
 # Copy the built jar file from the build stage
-COPY --from=build /app/build/libs/*.jar app.jar
+COPY --from=build /app/target/*.jar app.jar
 
 # Command to run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
