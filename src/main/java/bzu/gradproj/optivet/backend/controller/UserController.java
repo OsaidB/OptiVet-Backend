@@ -63,4 +63,11 @@ public class UserController {
         UserDTO userDto = userService.getUserByEmail(email);
         return ResponseEntity.ok(userDto);
     }
+
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getTotalPetsCount() {
+        Long totalPetsCount = userService.getTotalUsersCount();
+        return ResponseEntity.ok(totalPetsCount);
+    }
 }
