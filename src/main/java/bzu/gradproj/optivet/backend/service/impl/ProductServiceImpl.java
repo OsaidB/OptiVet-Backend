@@ -38,9 +38,16 @@ public class ProductServiceImpl implements ProductService {
         Product existingProduct = productRepo.findById(productId).orElseThrow(() -> new EntityNotFoundException("Product not found"));
 
 
-        productRepo.save(existingProduct);
-        return productMapper.toDTO(existingProduct);
+        existingProduct.setName(productDTO.getName());
+        existingProduct.setProductCategory(productDTO.getProductCategory());
+        existingProduct.setPrice(productDTO.getPrice());
+        existingProduct.setProductImageUrl(productDTO.getProductImageUrl());
 
+        Product updatedProduct = productRepo.save(existingProduct);
+        return productMapper.toDTO(updatedProduct);
+
+//        productRepo.save(existingProduct);
+//        return productMapper.toDTO(existingProduct);
 
     }
 
@@ -54,8 +61,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-
-
     @Override
     public ProductDTO getProductById(Long id) {
 
@@ -66,8 +71,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
 
-    public void deleteProduct(Long id) {
-        productRepo.deleteById(id);
+    public void deleteProduct(Long productId) {
+        productRepo.deleteById(productId);
     }
 
 
