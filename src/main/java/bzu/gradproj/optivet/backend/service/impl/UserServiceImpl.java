@@ -146,6 +146,12 @@ public class UserServiceImpl implements UserService {
 //        return UserMapper.INSTANCE.toUserDTO(user);
 //    }
 
+
+    @Override
+    public Long getTotalUsersCount() {
+        return userRepo.count();
+    }
+
     @Override
     public UserDTO getUserByUsername(String email) {
 //        return Optional.empty();

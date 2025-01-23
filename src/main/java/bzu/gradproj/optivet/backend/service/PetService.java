@@ -12,5 +12,6 @@ public interface PetService {
     List<PetDTO> getPetsByOwnerId(Long ownerId);
     List<PetDTO> getPetsByResidencyType(Pet.ResidencyType residencyType);
     PetDTO updatePet(Long petId, PetDTO petDTO);
+    Long  getTotalPetsCount();
     void deletePet(Long petId);
 }

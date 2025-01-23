@@ -101,6 +101,11 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
+    public Long getTotalPetsCount() {
+        return petRepository.count();
+    }
+
+    @Override
     @Transactional
     public void deletePet(Long petId) {
         if (!petRepository.existsById(petId)) {

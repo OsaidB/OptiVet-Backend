@@ -13,5 +13,6 @@ public interface UserService {
     UserDTO updateUser(Long userId, UserDTO updatedUser);
     void deleteUser(Long userId);
     UserDTO getUserByEmail(String email); // Changed from username to email
+    Long  getTotalUsersCount();
     UserDTO getUserByUsername(String username);//email
 }

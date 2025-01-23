@@ -128,4 +128,11 @@ public class PetController {
         petService.deletePet(petId);
         return ResponseEntity.ok("Pet deleted successfully.");
     }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getTotalPetsCount() {
+        Long totalPetsCount = petService.getTotalPetsCount();
+        return ResponseEntity.ok(totalPetsCount);
+    }
+
 }
