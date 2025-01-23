@@ -15,4 +15,5 @@ public interface ClientService {
     List<PetDTO> getClientPets(Long clientId);
     ClientDTO getClientByEmail(String email);
 
+    Long getTotalClientsCount();
 }

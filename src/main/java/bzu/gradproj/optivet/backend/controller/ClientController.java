@@ -63,4 +63,10 @@ public class ClientController {
         ClientDTO clientDTO = clientService.getClientByEmail(email);
         return ResponseEntity.ok(clientDTO);
     }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getTotalClientsCount() {
+        Long totalClientsCount = clientService.getTotalClientsCount();
+        return ResponseEntity.ok(totalClientsCount);
+    }
 }

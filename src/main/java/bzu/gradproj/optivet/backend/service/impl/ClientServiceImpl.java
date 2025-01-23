@@ -86,4 +86,9 @@ public class ClientServiceImpl implements ClientService {
                 .orElseThrow(() -> new ResourceNotFoundException("Client not found with email: " + email));
         return clientMapper.toDTO(client);
     }
+
+    @Override
+    public Long getTotalClientsCount() {
+        return clientRepo.count();
+    }
 }

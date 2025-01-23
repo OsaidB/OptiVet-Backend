@@ -66,8 +66,8 @@ public class UserController {
 
 
     @GetMapping("/count")
-    public ResponseEntity<Long> getTotalPetsCount() {
-        Long totalPetsCount = userService.getTotalUsersCount();
-        return ResponseEntity.ok(totalPetsCount);
+    public ResponseEntity<Long> getTotalUsersCount() {
+        Long totalUsersCount = userService.getTotalUsersCount();
+        return ResponseEntity.ok(totalUsersCount);
     }
 }
