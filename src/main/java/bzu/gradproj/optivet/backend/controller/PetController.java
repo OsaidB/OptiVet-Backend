@@ -129,6 +129,12 @@ public class PetController {
         return ResponseEntity.ok("Pet deleted successfully.");
     }
 
+    @PutMapping("/soft-delete/{petId}")
+    public ResponseEntity<String> softDeletePet(@PathVariable("petId") Long petId) {
+        petService.softDeletePet(petId);
+        return ResponseEntity.ok("Pet soft-deleted successfully.");
+    }
+
     @GetMapping("/count")
     public ResponseEntity<Long> getTotalPetsCount() {
         Long totalPetsCount = petService.getTotalPetsCount();

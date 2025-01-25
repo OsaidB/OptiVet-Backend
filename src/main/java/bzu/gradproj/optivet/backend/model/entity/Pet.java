@@ -56,4 +56,22 @@ public class Pet {
         ABANDONED
     }
 
+    // New Attributes
+    @Column(name = "is_deleted", nullable = false)
+    private boolean deleted = false; // Default value is false
+
+    @Column(name = "manual_id", unique = true)
+    private String manualId; // Optional field for manual ID
+
+    @Column(name = "gender")
+    private String gender; // Gender (e.g., Male, Female, etc.)
+
+//    public boolean isDeleted() {
+//        return isDeleted;
+//    }
+//
+//    public void setIsDeleted(boolean isDeleted) {
+//        this.isDeleted = isDeleted;
+//    }
+
 }

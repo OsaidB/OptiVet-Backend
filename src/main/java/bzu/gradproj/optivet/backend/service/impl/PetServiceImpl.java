@@ -95,6 +95,9 @@ public class PetServiceImpl implements PetService {
         existingPet.setBreed(petDTO.getBreed());
         existingPet.setBirthDate(petDTO.getBirthDate());
         existingPet.setMedicalHistory(petDTO.getMedicalHistory());
+        existingPet.setGender(petDTO.getGender());
+        existingPet.setManualId(petDTO.getManualId());
+        existingPet.setDeleted(petDTO.isDeleted());
 
         Pet updatedPet = petRepository.save(existingPet);
         return petMapper.toDTO(updatedPet);
@@ -112,5 +115,15 @@ public class PetServiceImpl implements PetService {
             throw new ResourceNotFoundException("Pet not found with id: " + petId);
         }
         petRepository.deleteById(petId);
+    }
+
+    @Override
+    @Transactional
+    public void softDeletePet(Long petId) {
+        Pet existingPet = petRepository.findById(petId)
+                .orElseThrow(() -> new ResourceNotFoundException("Pet not found with id: " + petId));
+
+        existingPet.setDeleted(true);
+        petRepository.save(existingPet);
     }
 }

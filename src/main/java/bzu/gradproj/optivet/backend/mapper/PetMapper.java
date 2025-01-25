@@ -15,6 +15,9 @@ public interface PetMapper {
     @Mappings({
             @Mapping(source = "owner.id", target = "ownerId"),
 //            @Mapping(source = "medicalHistoryy.id", target = "medicalHistoryy")
+            @Mapping(source = "deleted", target = "deleted"),
+            @Mapping(source = "manualId", target = "manualId"),
+            @Mapping(source = "gender", target = "gender")
     })
     PetDTO toDTO(Pet pet);
 
@@ -22,6 +25,9 @@ public interface PetMapper {
     @Mappings({
             @Mapping(source = "ownerId", target = "owner.id"),
 //            @Mapping(source = "medicalHistoryy", target = "medicalHistoryy.id")
+            @Mapping(source = "deleted", target = "deleted"),
+            @Mapping(source = "manualId", target = "manualId"),
+            @Mapping(source = "gender", target = "gender")
     })
     Pet toEntity(PetDTO petDTO);
 }

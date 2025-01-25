@@ -38,4 +38,9 @@ public class PetDTO {
 
     // New field for residency type
     private ResidencyType residencyType;
+
+    // New fields
+    private boolean deleted; // Rename to "deleted"
+    private String manualId;   // Field for manual ID
+    private String gender;     // Field for pet gender
 }
