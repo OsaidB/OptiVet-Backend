@@ -14,4 +14,7 @@ public interface PetService {
     PetDTO updatePet(Long petId, PetDTO petDTO);
     Long  getTotalPetsCount();
     void deletePet(Long petId);
+
+    // New method to soft-delete a pet
+    void softDeletePet(Long petId);
 }
