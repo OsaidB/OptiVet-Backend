@@ -58,5 +58,6 @@ public class MedicalHistory {
     private List<Surgeories> surgeories;
 
 
-
+    @OneToOne(fetch = FetchType.LAZY)
+    private Pet pet;
 }
