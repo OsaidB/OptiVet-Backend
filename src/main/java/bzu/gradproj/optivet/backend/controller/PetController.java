@@ -1,6 +1,7 @@
 package bzu.gradproj.optivet.backend.controller;
 
 import bzu.gradproj.optivet.backend.dto.PetDTO;
+import bzu.gradproj.optivet.backend.dto.PetSummaryDTO;
 import bzu.gradproj.optivet.backend.model.entity.Pet;
 import bzu.gradproj.optivet.backend.service.PetService;
 import jakarta.validation.Valid;
@@ -139,6 +140,11 @@ public class PetController {
     public ResponseEntity<Long> getTotalPetsCount() {
         Long totalPetsCount = petService.getTotalPetsCount();
         return ResponseEntity.ok(totalPetsCount);
+    }
+    @GetMapping("owner/{ownerId}/summary")
+    public ResponseEntity<List<PetSummaryDTO>> getPetSummariesByOwnerId(@PathVariable("ownerId") Long ownerId) {
+        List<PetSummaryDTO> petSummaries = petService.getPetSummariesByOwnerId(ownerId);
+        return ResponseEntity.ok(petSummaries);
     }
 
 }

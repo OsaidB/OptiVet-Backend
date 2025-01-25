@@ -1,6 +1,7 @@
 package bzu.gradproj.optivet.backend.service.impl;
 
 import bzu.gradproj.optivet.backend.dto.PetDTO;
+import bzu.gradproj.optivet.backend.dto.PetSummaryDTO;
 import bzu.gradproj.optivet.backend.exception.ResourceNotFoundException;
 import bzu.gradproj.optivet.backend.mapper.ClientMapper;
 import bzu.gradproj.optivet.backend.mapper.PetMapper;
@@ -131,4 +132,25 @@ public class PetServiceImpl implements PetService {
         existingPet.setDeleted(true);
         petRepository.save(existingPet);
     }
+    @Override
+    @Transactional
+    public List<PetSummaryDTO> getPetSummariesByOwnerId(Long ownerId) {
+        return petRepository.findByOwnerId(ownerId).stream()
+                .map(pet -> new PetSummaryDTO(
+                        pet.getId(),
+                        pet.getName(),
+                        pet.getType(),
+                        pet.getBreed(),
+                        pet.getBirthDate(),
+                        pet.getMedicalHistory(),
+                        pet.getOwner() != null ? pet.getOwner().getId() : null,
+                        pet.getImageUrl(),
+                        pet.getResidencyType(),
+                        pet.isDeleted(),
+                        pet.getManualId(),
+                        pet.getGender()
+                ))
+                .collect(Collectors.toList());
+    }
+
 }

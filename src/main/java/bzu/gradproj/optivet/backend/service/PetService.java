@@ -1,6 +1,7 @@
 package bzu.gradproj.optivet.backend.service;
 
 import bzu.gradproj.optivet.backend.dto.PetDTO;
+import bzu.gradproj.optivet.backend.dto.PetSummaryDTO;
 import bzu.gradproj.optivet.backend.model.entity.Pet;
 
 import java.util.List;
@@ -17,4 +18,7 @@ public interface PetService {
 
     // New method to soft-delete a pet
     void softDeletePet(Long petId);
-}
+
+    List<PetSummaryDTO> getPetSummariesByOwnerId(Long ownerId);
+
+    }
