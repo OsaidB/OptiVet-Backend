@@ -99,6 +99,11 @@ public class PetServiceImpl implements PetService {
         existingPet.setManualId(petDTO.getManualId());
         existingPet.setDeleted(petDTO.isDeleted());
 
+        // Update imageUrl if it's provided in the DTO
+        if (petDTO.getImageUrl() != null && !petDTO.getImageUrl().isEmpty()) {
+            existingPet.setImageUrl(petDTO.getImageUrl());
+        }
+
         Pet updatedPet = petRepository.save(existingPet);
         return petMapper.toDTO(updatedPet);
     }
