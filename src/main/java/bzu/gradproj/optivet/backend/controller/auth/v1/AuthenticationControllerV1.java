@@ -57,4 +57,22 @@ public class AuthenticationControllerV1 extends BaseController {
     authenticationService.confirmPasswordReset(passwordResetConfirmRequest);
     return new ResponseEntity<>(HttpStatus.OK);
   }
+
+  @PostMapping("/logout")
+  public ResponseEntity<String> logout(HttpServletRequest request) {
+    // Extract the token from the X-Auth-Token header
+    String token = request.getHeader("X-Auth-Token");
+
+    if (token != null) {
+      // Call the service to invalidate the token
+      boolean isLoggedOut = authenticationService.logout(token);
+
+      if (isLoggedOut) {
+        return ResponseEntity.ok("Logout successful");
+      }
+    }
+
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid or missing token");
+  }
+
 }

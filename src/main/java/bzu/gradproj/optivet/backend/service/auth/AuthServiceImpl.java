@@ -388,4 +388,22 @@ public class AuthServiceImpl implements AuthService/*custom class*/ {
         return userRepo.save(newUser);
     }
 
+    @Override
+    public boolean logout(String token) {
+        if (token == null || token.isEmpty()) {
+            logger.warn("Invalid token provided for logout.");
+            return false; // Return false if token is null or empty
+        }
+
+        try {
+            // Invalidate the token
+            tokenUtils.invalidateToken(token);
+            logger.info("Token successfully invalidated.");
+            return true; // Return true to indicate successful logout
+        } catch (Exception e) {
+            logger.error("Error during logout: {}", e.getMessage());
+            return false; // Return false if an error occurs
+        }
+    }
+
 }

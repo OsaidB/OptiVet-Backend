@@ -12,6 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,10 @@ public class TokenUtils {
     5- SignatureAlgorithm: (from the io.jsonwebtoken library) defines the signature algorithm used for signing the JWT.
 
     */
+
+    private final ConcurrentHashMap<String, Boolean> blacklistedTokens = new ConcurrentHashMap<>();
+
+
     private static final Logger logger = LoggerFactory.getLogger(TokenUtils.class);
     private static final String AUDIENCE_WEB = "web";
     private static final String RESET_TOKEN_SUBJECT = "password-reset";
@@ -274,6 +279,19 @@ public class TokenUtils {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
+    // Add method to invalidate a token
+    public void invalidateToken(String token) {
+        if (token != null) {
+            blacklistedTokens.put(token, true);
+        }
+    }
+
+    // Add method to check if a token is blacklisted
+    public boolean isTokenBlacklisted(String token) {
+        return blacklistedTokens.containsKey(token);
+    }
+
 }
 /*
 

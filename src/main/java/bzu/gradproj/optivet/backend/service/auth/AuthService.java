@@ -24,4 +24,7 @@ public interface AuthService {
 //    void requestPasswordReset(String email);
 
     void confirmPasswordReset(PasswordResetConfirmRequest passwordResetConfirmRequest);
+
+    boolean logout(String token);
+
 }

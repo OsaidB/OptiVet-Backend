@@ -50,6 +50,13 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
             return;
         }
 
+        // Check if the token is blacklisted
+        if (tokenUtils.isTokenBlacklisted(authToken)) {
+            logger.warn("Token is blacklisted. Access denied.");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Set 401 Unauthorized
+            response.getWriter().write("Token is invalidated. Please log in again.");
+            return;
+        }
 
         String email  = this.tokenUtils.getUsernameFromToken(authToken);//username is actually the email
         //The tokenUtils.getUsernameFromToken(authToken) method
