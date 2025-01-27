@@ -1,12 +1,17 @@
 package bzu.gradproj.optivet.backend.service.impl;
 
 import bzu.gradproj.optivet.backend.dto.DailyChecklistDTO;
+import bzu.gradproj.optivet.backend.dto.PetDTO;
 import bzu.gradproj.optivet.backend.mapper.DailyChecklistMapper;
+import bzu.gradproj.optivet.backend.mapper.PetMapper;
 import bzu.gradproj.optivet.backend.model.entity.DailyChecklist;
+import bzu.gradproj.optivet.backend.model.entity.Pet;
 import bzu.gradproj.optivet.backend.repository.DailyChecklistRepo;
+import bzu.gradproj.optivet.backend.repository.PetRepository;
 import bzu.gradproj.optivet.backend.service.DailyChecklistService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -18,7 +23,11 @@ import java.util.stream.Collectors;
 public class DailyChecklistServiceImpl implements DailyChecklistService {
 
     private final DailyChecklistRepo dailyChecklistRepo;
+    private final PetRepository petRepository;
     private final DailyChecklistMapper dailyChecklistMapper;
+
+    @Autowired
+    private PetMapper petMapper; // Injected PetMapper instance
 
     @Override
     public DailyChecklistDTO createDailyChecklist(DailyChecklistDTO dailyChecklistDTO) {
@@ -83,4 +92,28 @@ public class DailyChecklistServiceImpl implements DailyChecklistService {
                 .map(dailyChecklistMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<Long> getCheckedPetIdsForToday(LocalDate date) {
+        // Fetch pet IDs that have a daily checklist for the given date
+        return dailyChecklistRepo.findCheckedPetIdsByDate(date);
+    }
+
+    @Override
+    public List<Long> getUncheckedPetIdsForToday(LocalDate date) {
+        List<Long> checkedIds = dailyChecklistRepo.findCheckedPetIdsByDate(date);
+        return petRepository.findPetsNotInIds(checkedIds)
+                .stream()
+                .map(Pet::getId) // Extract IDs
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PetDTO> getPetsByIds(List<Long> ids) {
+        return petRepository.findAllById(ids)
+                .stream()
+                .map(petMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
 }

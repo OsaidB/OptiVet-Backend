@@ -1,6 +1,7 @@
 package bzu.gradproj.optivet.backend.service;
 
 import bzu.gradproj.optivet.backend.dto.DailyChecklistDTO;
+import bzu.gradproj.optivet.backend.dto.PetDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,4 +23,10 @@ public interface DailyChecklistService {
     void deleteDailyChecklist(Long id);
 
     List<DailyChecklistDTO> getDailyChecklistsWithCriticalIssues();
+
+    List<Long> getCheckedPetIdsForToday(LocalDate date);
+
+    List<Long> getUncheckedPetIdsForToday(LocalDate date);
+
+    List<PetDTO> getPetsByIds(List<Long> ids);
 }
