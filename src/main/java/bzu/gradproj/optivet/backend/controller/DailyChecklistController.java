@@ -28,12 +28,23 @@ public class DailyChecklistController {
         return new ResponseEntity<>(createdChecklist, HttpStatus.CREATED);
     }
 
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Get a Daily Checklist by ID
     @GetMapping("/{id}")
     public ResponseEntity<DailyChecklistDTO> getDailyChecklistById(@PathVariable Long id) {
         DailyChecklistDTO dailyChecklistDTO = dailyChecklistService.getDailyChecklistById(id);
         return ResponseEntity.ok(dailyChecklistDTO);
     }
+
+    // Get all Daily Checklists for a specific Pet
+    @GetMapping("/pet/{petId}")
+    public ResponseEntity<List<DailyChecklistDTO>> getDailyChecklistsByPetId(@PathVariable Long petId) {
+        List<DailyChecklistDTO> dailyChecklists = dailyChecklistService.getDailyChecklistsByPetId(petId);
+        return ResponseEntity.ok(dailyChecklists);
+    }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Get all Daily Checklists
     @GetMapping
