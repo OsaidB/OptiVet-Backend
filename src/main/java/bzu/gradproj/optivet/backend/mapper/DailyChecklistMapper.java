@@ -15,7 +15,7 @@ public interface DailyChecklistMapper {
     @Mapping(source = "petId", target = "pet.id")
     DailyChecklist toEntity(DailyChecklistDTO dailyChecklistDTO);
 
-    // New method to update an existing entity from a DTO
-    @Mapping(source = "petId", target = "pet.id")
-    void updateFromDto(DailyChecklistDTO dailyChecklistDTO, @MappingTarget DailyChecklist dailyChecklist);
+//    // New method to update an existing entity from a DTO
+//    @Mapping(source = "petId", target = "pet.id")
+//    void updateFromDto(DailyChecklistDTO dailyChecklistDTO, @MappingTarget DailyChecklist dailyChecklist);
 }

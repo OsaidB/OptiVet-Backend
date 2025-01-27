@@ -11,6 +11,7 @@ import bzu.gradproj.optivet.backend.repository.PetRepository;
 import bzu.gradproj.optivet.backend.service.DailyChecklistService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DailyChecklistServiceImpl implements DailyChecklistService {
@@ -38,11 +40,38 @@ public class DailyChecklistServiceImpl implements DailyChecklistService {
 
     @Override
     public DailyChecklistDTO updateDailyChecklist(Long id, DailyChecklistDTO dailyChecklistDTO) {
+//        log.error("Attempting to update checklist with ID: {}", id);
+//        log.error("Attempting to update checklist with DTO: {}", dailyChecklistDTO);
+
+        // Fetch the existing checklist from the repository
         DailyChecklist existingChecklist = dailyChecklistRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Daily checklist not found with ID: " + id));
 
-        dailyChecklistMapper.updateFromDto(dailyChecklistDTO, existingChecklist);
+        // Manually update the fields
+        existingChecklist.setDate(dailyChecklistDTO.getDate());
+        existingChecklist.setEatingWell(dailyChecklistDTO.getEatingWell());
+        existingChecklist.setDrinkingWater(dailyChecklistDTO.getDrinkingWater());
+        existingChecklist.setActiveBehavior(dailyChecklistDTO.getActiveBehavior());
+        existingChecklist.setNormalVitalSigns(dailyChecklistDTO.getNormalVitalSigns());
+        existingChecklist.setHealthObservations(dailyChecklistDTO.getHealthObservations());
+        existingChecklist.setWeightChange(dailyChecklistDTO.getWeightChange());
+        existingChecklist.setInjuriesOrWounds(dailyChecklistDTO.getInjuriesOrWounds());
+        existingChecklist.setFeedingCompleted(dailyChecklistDTO.getFeedingCompleted());
+        existingChecklist.setCleanedLivingSpace(dailyChecklistDTO.getCleanedLivingSpace());
+        existingChecklist.setPoopNormal(dailyChecklistDTO.getPoopNormal());
+        existingChecklist.setPoopNotes(dailyChecklistDTO.getPoopNotes());
+        existingChecklist.setCriticalIssueFlag(dailyChecklistDTO.getCriticalIssueFlag());
+        existingChecklist.setCriticalNotes(dailyChecklistDTO.getCriticalNotes());
+
+        // Update the relationship with the Pet entity
+        Pet pet = petRepository.findById(dailyChecklistDTO.getPetId())
+                .orElseThrow(() -> new EntityNotFoundException("Pet not found with ID: " + dailyChecklistDTO.getPetId()));
+        existingChecklist.setPet(pet);
+
+        // Save the updated checklist
         DailyChecklist updatedChecklist = dailyChecklistRepo.save(existingChecklist);
+
+        // Return the updated DTO
         return dailyChecklistMapper.toDTO(updatedChecklist);
     }
 

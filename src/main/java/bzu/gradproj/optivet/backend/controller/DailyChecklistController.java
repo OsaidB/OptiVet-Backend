@@ -5,6 +5,7 @@ import bzu.gradproj.optivet.backend.dto.PetDTO;
 import bzu.gradproj.optivet.backend.service.DailyChecklistService;
 import bzu.gradproj.optivet.backend.service.PetService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
+@Slf4j
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/daily-checklists")
@@ -58,6 +60,7 @@ public class DailyChecklistController {
     public ResponseEntity<DailyChecklistDTO> updateDailyChecklist(
             @PathVariable Long id,
             @RequestBody DailyChecklistDTO dailyChecklistDTO) {
+//        log.error("Received payload: {}", dailyChecklistDTO);
         DailyChecklistDTO updatedChecklist = dailyChecklistService.updateDailyChecklist(id, dailyChecklistDTO);
         return ResponseEntity.ok(updatedChecklist);
     }
